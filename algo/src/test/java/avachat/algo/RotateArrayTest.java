@@ -41,7 +41,7 @@ public class RotateArrayTest extends TestCase {
     }
 
     /**
-     * Rotate once
+     * Rotate 4 times
      */
     public void testRotateWithExtraArray4()
     {
@@ -71,4 +71,54 @@ public class RotateArrayTest extends TestCase {
         int[] outputArray = rotateArray.rotateWithExtraArray(inputArray, 10);
         assertTrue( Arrays.equals(outputArray, inputArray));
     }
+
+
+
+    /**
+     * Rotate 1 times, using temp space of 1
+     */
+    public void testRotateInSpace11()
+    {
+        int[] inputArray = {0, 1, 2, 3, 4};
+        rotateArray.rotateInPlaceWithTempSpace(inputArray, 1, 1);
+        int[] expectedArray = new int[] {1, 2, 3, 4, 0};
+        assertTrue( Arrays.equals(inputArray, expectedArray));
+    }
+
+
+    /**
+     * Rotate 3 times, using temp space of 1
+     */
+    public void testRotateInSpace31()
+    {
+        int[] inputArray = {0, 1, 2, 3, 4};
+        rotateArray.rotateInPlaceWithTempSpace(inputArray, 3, 1);
+        int[] expectedArray = new int[] {3, 4, 0, 1, 2};
+        assertTrue( Arrays.equals(inputArray, expectedArray));
+    }
+
+
+    /**
+     * Rotate 3 times, using temp space of 2
+     */
+    public void testRotateInSpace32()
+    {
+        int[] inputArray = {0, 1, 2, 3, 4};
+        rotateArray.rotateInPlaceWithTempSpace(inputArray, 3, 2);
+        int[] expectedArray = new int[] {3, 4, 0, 1, 2};
+        assertTrue( Arrays.equals(inputArray, expectedArray));
+    }
+
+    /**
+     * Rotate 3 times, using temp space of 20
+     */
+    public void testRotateInSpace320()
+    {
+        int[] inputArray = {0, 1, 2, 3, 4};
+        rotateArray.rotateInPlaceWithTempSpace(inputArray, 3, 20);
+        int[] expectedArray = new int[] {3, 4, 0, 1, 2};
+        assertTrue( Arrays.equals(inputArray, expectedArray));
+    }
+
+
 }
