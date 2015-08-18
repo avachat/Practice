@@ -39,8 +39,14 @@ Sample Output
 
 
  */
+
 public class TimeConversion {
 
+    /*
+    * NOTE :
+    * 12 should NOT be added 12:xx PM
+    * If it's not PM, and is 12:xx, hour should be set to zero
+     */
     public static void main (String args[]) {
 
         Scanner scanner = new Scanner(System.in);

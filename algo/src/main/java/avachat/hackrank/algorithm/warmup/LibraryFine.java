@@ -42,6 +42,11 @@ Since the actual date is 3 days late than expected, fine is calculated as 15×3=
  */
 public class LibraryFine {
 
+    /**
+     * NOTE :
+     * Return date may be earlier than actual date
+     * @return
+     */
     public static int calculateFine() {
 
         Scanner scanner = new Scanner(System.in);

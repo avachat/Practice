@@ -13,6 +13,12 @@ You are given a square matrix of size N×N. Calculate the absolute difference of
  */
 public class DiagonalDiff {
 
+    /**
+     * NOTE :
+     * Reverse diagonal needs to be calculated correctly.
+     * No need to store the matrix
+     * @param args
+     */
     public static void main (String args[]) {
 
         Scanner scanner = new Scanner(System.in);
