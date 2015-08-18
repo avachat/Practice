@@ -73,7 +73,7 @@ public class SherlockAndBeast {
      * NOTE :
      * Hackerrank times out if print is called within a loop.
      * So a buf is needed.
-     * 
+     *
      * @param args
      */
     public static void main (String args[]) {
