@@ -20,6 +20,10 @@ public class Solution {
         for (int t = 0; t< numTestCases; t++) {
 
             int num = scanner.nextInt();
+
+            long result = 0;
+
+            System.out.println(result);
         }
 
     }
