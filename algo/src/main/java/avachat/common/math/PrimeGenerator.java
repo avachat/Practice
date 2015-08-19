@@ -1,7 +1,5 @@
 package avachat.common.math;
 
-import java.util.Arrays;
-
 /**
  * Created by avachat on 8/18/15.
  */
@@ -57,6 +55,12 @@ public class PrimeGenerator {
         int numPrimes = generate(N, primes);
 
         System.out.println (numPrimes);
-        System.out.println(Arrays.toString(primes));
+        for (int i = 0; i < numPrimes; i++) {
+            System.out.print(primes[i]);
+            if ( i != (numPrimes - 1)) {
+                System.out.print(",");
+            }
+        }
+        System.out.println();
     }
 }
