@@ -4,6 +4,15 @@ import com.google.common.base.Preconditions;
 import java.util.Objects;
 
 /**
+ * Base class for all types of edges.
+ *
+ * This class behaves as directional single edge.
+ * This is ensured by implementation of equals.
+ *
+ * Bidirectional edges will have to implement a stricter criterion.
+ * Mult-graph edges will implement equals based on more than just vertices.
+ * Etc.
+ *
  * Created by avachat on 8/19/15.
  */
 public class Edge<IdType extends Comparable<IdType>> {

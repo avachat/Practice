@@ -10,7 +10,7 @@ public class UndirectedEdge<IdType extends Comparable<IdType>> extends Edge<IdTy
 
     //
     // Just diff names for source and destinations based on their natural sorting order
-    protected Vertex<IdType> lowerVertex, upperVertex;
+    protected final Vertex<IdType> lowerVertex, upperVertex;
 
     /**
      * Creates an undirectional edge
@@ -37,6 +37,17 @@ public class UndirectedEdge<IdType extends Comparable<IdType>> extends Edge<IdTy
             upperVertex = source;
             lowerVertex = destination;
         }
+    }
+
+
+    /**
+     * Helper constructor
+     *
+     * @param source
+     * @param destination
+     */
+    public UndirectedEdge(Vertex<IdType> source, Vertex<IdType> destination) {
+        this(source, destination, 1.0, 1.0);
     }
 
     @Override

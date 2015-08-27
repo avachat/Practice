@@ -9,7 +9,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- * Models a general purpose graph, except multi-graph.
+ * Models a general purpose graph, even multi-graph.
  *
  * Created by avachat on 8/19/15.
  */
@@ -17,7 +17,7 @@ public class Graph<IdType extends Comparable<IdType>> {
 
     protected final Map<IdType, Vertex<IdType>> mapIdVertex;
     protected final SortedSet<Vertex<IdType>> vertices;
-    protected final Set<Edge> edges;
+    protected final Set<Edge<IdType>> edges;
 
     /**
      * Default graph behaviour.
@@ -26,10 +26,10 @@ public class Graph<IdType extends Comparable<IdType>> {
     public Graph() {
         this.mapIdVertex = new HashMap<IdType, Vertex<IdType>>();
         this.vertices = new TreeSet<Vertex<IdType>>(new VertexIdComparator<IdType>());
-        this.edges = new HashSet<Edge>();
+        this.edges = new HashSet<Edge<IdType>>();
     }
 
-    public Vertex addVertexIfNeeded(IdType id) {
+    public Vertex<IdType> addVertexIfNeeded(IdType id) {
 
         if ( mapIdVertex.containsKey(id)) {
             return mapIdVertex.get(id);
@@ -42,42 +42,41 @@ public class Graph<IdType extends Comparable<IdType>> {
         return vertex;
     }
 
-    public Edge addVerticesAndEdge (IdType sourceId, IdType destinationId) {
+    public Edge<IdType> addVerticesAndEdge (IdType sourceId, IdType destinationId) {
 
-        Vertex source = addVertexIfNeeded(sourceId);
-        Vertex destination = addVertexIfNeeded(destinationId);
+        Vertex<IdType> source = addVertexIfNeeded(sourceId);
+        Vertex <IdType>destination = addVertexIfNeeded(destinationId);
 
-        Edge edge = createGraphSpecificEdge (source, destination);
+        Edge<IdType> edge = createGraphSpecificEdge (source, destination);
+
+        if ( edges.contains(edge)) {
+            throw new IllegalArgumentException("The required edge already exists");
+        }
 
         edges.add(edge);
-
-        return edge;
-    }
-
-    /**
-     * Allow derived classes to override this method
-     * E.g. a bidirectional graph would update the vertices in a different manner.
-     * While this graph creates only a directional edge.
-     *
-     * @param source
-     * @param destination
-     * @return
-     */
-    private Edge createGraphSpecificEdge(Vertex<IdType> source, Vertex<IdType> destination) {
-
-        Edge edge = new Edge(source, destination, true);
-
         source.addDestination(destination, edge);
         destination.addSource (source, edge);
 
         return edge;
     }
 
+    /**
+     * Allow derived classes to override this method
+     * While this graph creates only a directional edge.
+     *
+     * @param source
+     * @param destination
+     * @return
+     */
+    protected Edge<IdType> createGraphSpecificEdge(Vertex<IdType> source, Vertex<IdType> destination) {
+        return new Edge<IdType>(source, destination, true);
+    }
+
     public SortedSet<Vertex<IdType>> getVertices() {
         return vertices;
     }
 
-    public Set<Edge> getEdges() {
+    public Set<Edge<IdType>> getEdges() {
         return edges;
     }
 }
