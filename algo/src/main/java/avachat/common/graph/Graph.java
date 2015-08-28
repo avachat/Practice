@@ -1,6 +1,9 @@
 package avachat.common.graph;
 
 import avachat.common.graph.Vertex.VertexIdComparator;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableSortedSet;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -15,21 +18,26 @@ import java.util.TreeSet;
  */
 public class Graph<IdType extends Comparable<IdType>> {
 
+    /**
+     * These are redundant structures, useful in different usecases.
+     */
     protected final Map<IdType, Vertex<IdType>> mapIdVertex;
     protected final SortedSet<Vertex<IdType>> vertices;
     protected final Set<Edge<IdType>> edges;
+    protected final Comparator<? super Vertex<IdType>> vertexComparator;
 
     /**
      * Default graph behaviour.
      * Uses vertex comparison based on ID
      */
     public Graph() {
+        this.vertexComparator = new VertexIdComparator<IdType>();
         this.mapIdVertex = new HashMap<IdType, Vertex<IdType>>();
         this.vertices = new TreeSet<Vertex<IdType>>(new VertexIdComparator<IdType>());
         this.edges = new HashSet<Edge<IdType>>();
     }
 
-    public Vertex<IdType> addVertexIfNeeded(IdType id) {
+    protected Vertex<IdType> addVertexIfNeeded(IdType id) {
 
         if ( mapIdVertex.containsKey(id)) {
             return mapIdVertex.get(id);
@@ -55,7 +63,7 @@ public class Graph<IdType extends Comparable<IdType>> {
 
         edges.add(edge);
         source.addDestination(destination, edge);
-        destination.addSource (source, edge);
+        destination.addSource(source, edge);
 
         return edge;
     }
@@ -72,11 +80,15 @@ public class Graph<IdType extends Comparable<IdType>> {
         return new Edge<IdType>(source, destination, true);
     }
 
+    public Vertex<IdType> getVertex (IdType id) {
+        return mapIdVertex.get(id);
+    }
+
     public SortedSet<Vertex<IdType>> getVertices() {
-        return vertices;
+        return ImmutableSortedSet.copyOf (vertexComparator, vertices);
     }
 
     public Set<Edge<IdType>> getEdges() {
-        return edges;
+        return ImmutableSet.copyOf(edges);
     }
 }

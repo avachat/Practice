@@ -42,10 +42,6 @@ public class Vertex<IdType extends Comparable<IdType>> {
         this.isVisited = false;
     }
 
-    public boolean isConnectedTo (Vertex<IdType> other) {
-        return ( isSourceOf(other) || isDestinationOf(other));
-    }
-
     public void addDestination(Vertex<IdType> destination, Edge<IdType> edge) {
 
         Preconditions.checkNotNull(destination, "null param destination");
@@ -90,6 +86,10 @@ public class Vertex<IdType extends Comparable<IdType>> {
 
     public boolean isDestinationOf (Vertex<IdType> other) {
         return (sources.containsKey(other));
+    }
+
+    public boolean isConnectedTo (Vertex<IdType> other) {
+        return ( isSourceOf(other) || isDestinationOf(other));
     }
 
     @Override
@@ -154,6 +154,8 @@ public class Vertex<IdType extends Comparable<IdType>> {
     }
 
     /**
+     * TODO : Implement Comparable interface directly in Vertex.
+     *
      * Helper
      * @return
      */

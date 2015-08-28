@@ -35,6 +35,8 @@ public class Edge<IdType extends Comparable<IdType>> {
      */
     public Edge(Vertex<IdType> source, Vertex<IdType> destination, boolean isDirectional, double forwardWeight, double backwardWeight) {
 
+        // This implementation allows self edge, source and vertex can be same.
+
         Preconditions.checkNotNull(source, "source for an edge cannot be null");
         Preconditions.checkNotNull(destination, "destination for an edge cannot be null");
 

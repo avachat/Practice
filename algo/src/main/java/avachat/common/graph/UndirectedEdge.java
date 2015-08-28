@@ -1,6 +1,7 @@
 package avachat.common.graph;
 
 import avachat.common.graph.Vertex.VertexIdComparator;
+import com.google.common.base.Preconditions;
 import java.util.Objects;
 
 /**
@@ -23,6 +24,9 @@ public class UndirectedEdge<IdType extends Comparable<IdType>> extends Edge<IdTy
     public UndirectedEdge(Vertex<IdType> source, Vertex<IdType> destination, double forwardWeight, double backwardWeight) {
 
         super(source, destination, false, forwardWeight, backwardWeight);
+
+        // Self edges are not allowed
+        Preconditions.checkArgument( !(source.equals(destination)), "Source and vertex cannot be same");
 
         VertexIdComparator<IdType> vertexIdComparator = new VertexIdComparator<IdType>();
 
