@@ -94,6 +94,10 @@ public class Edge<IdType extends Comparable<IdType>> {
         return Objects.hash(source, destination);
     }
 
+    @Override
+    public String toString() {
+        return "(" + source + "->" + destination + ")";
+    }
 
     public boolean isDirectional() {
         return isDirectional;

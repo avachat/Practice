@@ -201,6 +201,11 @@ public class Vertex<IdType extends Comparable<IdType>> {
         return Objects.hashCode(id);
     }
 
+    @Override
+    public String toString() {
+        return getIdStr();
+    }
+
     /**
      * TODO : Implement Comparable interface directly in Vertex.
      *

@@ -1,5 +1,8 @@
 package avachat.common.graph;
 
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import org.testng.Assert;
@@ -11,7 +14,7 @@ import org.testng.annotations.Test;
 public class GraphTest {
 
     @Test
-    public void testAddVerticesAndEdges () {
+    public void testAddVerticesAndEdges() {
 
         Graph<String> graph = new Graph<String>();
 
@@ -74,58 +77,90 @@ public class GraphTest {
 
 
     @Test
-    public void testPerformBreadthFirstTraversal_1 () {
+    public void testPerformBreadthFirstTraversal_1() {
 
-        Graph<String> testGraph = new Graph<String>();
+        Graph<String> graph = new Graph<String>();
 
-        testGraph.addVerticesAndEdge("a", "b");
-        testGraph.addVerticesAndEdge("a", "c");
-        testGraph.addVerticesAndEdge("a", "d");
-        testGraph.addVerticesAndEdge("a", "e");
+        graph.addVerticesAndEdge("a", "b");
+        graph.addVerticesAndEdge("a", "c");
+        graph.addVerticesAndEdge("a", "d");
+        graph.addVerticesAndEdge("a", "e");
 
-        testGraph.addVerticesAndEdge("b", "c");
-        testGraph.addVerticesAndEdge("b", "d");
+        graph.addVerticesAndEdge("b", "c");
+        graph.addVerticesAndEdge("b", "d");
 
-        testGraph.addVerticesAndEdge("c", "b");
-        testGraph.addVerticesAndEdge("c", "e");
+        graph.addVerticesAndEdge("c", "b");
+        graph.addVerticesAndEdge("c", "e");
 
-        testGraph.addVerticesAndEdge("d", "e");
+        graph.addVerticesAndEdge("d", "e");
 
-        // no-op lambdas
-        Predicate<Vertex<String>> keepGoing = (Vertex<String> v) -> { return true; } ;
-        Consumer<Vertex<String>> visitCompletedConsumer =
-                (Vertex<String> v) -> {
-                    //System.out.println ("Completed visiting vertex " + v.getIdStr());
+        // no-op lambda
+        Predicate<Vertex<String>> keepGoing = (Vertex<String> v) -> {
+            return true;
+        };
+
+
+        BiConsumer<Vertex<String>, List<Edge<String>>> visitCompletedConsumer_a =
+                (Vertex<String> v,List<Edge<String>> path) -> {
+                    System.out.println("For vertex " + v.getIdStr()  + " Found path " + path);
+                    if ( ! v.getId().equals("a")) {
+                        Assert.assertEquals(path.size(), 1);
+                    }
                     return;
-                } ;
+                };
 
         // make assertions after traversal is complete
-        Consumer<Graph<String>> traversalCompletedConsumer_a =
-                (Graph<String> graph) -> {
+        Consumer<Map<Vertex<String>, List<Edge<String>>>> traversalCompletedConsumer_a =
+                (Map<Vertex<String>, List<Edge<String>>> pathsToVertices) -> {
                     // All vertices must have been visited when starting from a
-                    graph.getVertices().forEach( (Vertex<String> v) -> Assert.assertTrue(v.isVisited()));
+                    graph.getVertices().forEach((Vertex<String> v) -> Assert.assertTrue(v.isVisited()));
                     // all vertices except a have hop count of 1
                     Assert.assertEquals(graph.getVertex("a").getHopCount(), 0);
                     Assert.assertEquals(graph.getVertex("b").getHopCount(), 1);
                     Assert.assertEquals(graph.getVertex("c").getHopCount(), 1);
                     Assert.assertEquals(graph.getVertex("d").getHopCount(), 1);
                     Assert.assertEquals(graph.getVertex("e").getHopCount(), 1);
+                    // all vertices must have path
+                    Assert.assertEquals(pathsToVertices.size(), 5);
                 };
 
-        testGraph.performBreadthFirstTraversal( testGraph.getVertex("a"), visitCompletedConsumer, traversalCompletedConsumer_a, keepGoing);
+        System.out.println();
+        System.out.println("testPerformBreadthFirstTraversal_1" + "Starting traversal from a");
+        graph.performBreadthFirstTraversal(graph.getVertex("a"), visitCompletedConsumer_a, traversalCompletedConsumer_a, keepGoing);
+
+        BiConsumer<Vertex<String>, List<Edge<String>>> visitCompletedConsumer_b =
+                (Vertex<String> v,List<Edge<String>> path) -> {
+                    System.out.println("For vertex " + v.getIdStr()  + " Found path " + path);
+                    Assert.assertFalse( v.getId().equals("a")); // cannot come to a
+                    if ( v.getId().equals("c")) {
+                        Assert.assertEquals(path.size(), 1);
+                    }
+                    if ( v.getId().equals("d")) {
+                        Assert.assertEquals(path.size(), 1);
+                    }
+                    if ( v.getId().equals("e")) {
+                        Assert.assertEquals(path.size(), 2);
+                    }
+                    return;
+                };
 
         // make assertions after traversal is complete
-        Consumer<Graph<String>> traversalCompletedConsumer_b =
-                (Graph<String> graph) -> {
+        Consumer<Map<Vertex<String>, List<Edge<String>>>> traversalCompletedConsumer_b =
+                (Map<Vertex<String>, List<Edge<String>>> pathsToVertices) -> {
                     // all vertices except a have hop count of 1
                     Assert.assertEquals(graph.getVertex("a").getHopCount(), 0);
                     Assert.assertEquals(graph.getVertex("b").getHopCount(), 0);
                     Assert.assertEquals(graph.getVertex("c").getHopCount(), 1);
                     Assert.assertEquals(graph.getVertex("d").getHopCount(), 1);
                     Assert.assertEquals(graph.getVertex("e").getHopCount(), 2);
+                    // all vertices except a must have path
+                    Assert.assertEquals(pathsToVertices.size(), 4);
+                    Assert.assertFalse(pathsToVertices.containsKey(graph.getVertex("a")));
                 };
 
-        testGraph.performBreadthFirstTraversal( testGraph.getVertex("b"), visitCompletedConsumer, traversalCompletedConsumer_b, keepGoing);
+        System.out.println();
+        System.out.println("testPerformBreadthFirstTraversal_1" + "Starting traversal from b");
+        graph.performBreadthFirstTraversal(graph.getVertex("b"), visitCompletedConsumer_b, traversalCompletedConsumer_b, keepGoing);
 
     }
 
@@ -136,46 +171,67 @@ public class GraphTest {
     @Test
     public void testPerformBreadthFirstTraversal_2() {
 
-        Graph<String> testGraph = new Graph<>();
+        Graph<String> graph = new Graph<>();
 
-        testGraph.addVerticesAndEdge("a", "b");
-        testGraph.addVerticesAndEdge("a", "c");
-        testGraph.addVerticesAndEdge("a", "d");
+        graph.addVerticesAndEdge("a", "b");
+        graph.addVerticesAndEdge("a", "c");
+        graph.addVerticesAndEdge("a", "d");
 
-        testGraph.addVerticesAndEdge("b", "c");
-        testGraph.addVerticesAndEdge("b", "d");
-        testGraph.addVerticesAndEdge("b", "e");
+        graph.addVerticesAndEdge("b", "c");
+        graph.addVerticesAndEdge("b", "d");
+        graph.addVerticesAndEdge("b", "e");
 
-        testGraph.addVerticesAndEdge("c", "a"); // cycle
-        testGraph.addVerticesAndEdge("c", "d");
-        testGraph.addVerticesAndEdge("c", "e");
-        testGraph.addVerticesAndEdge("c", "f");
+        graph.addVerticesAndEdge("c", "a"); // cycle
+        graph.addVerticesAndEdge("c", "d");
+        graph.addVerticesAndEdge("c", "e");
+        graph.addVerticesAndEdge("c", "f");
 
-        testGraph.addVerticesAndEdge("d", "b"); // cycle
-        testGraph.addVerticesAndEdge("d", "e");
-        testGraph.addVerticesAndEdge("d", "f");
-        testGraph.addVerticesAndEdge("d", "g");
+        graph.addVerticesAndEdge("d", "b"); // cycle
+        graph.addVerticesAndEdge("d", "e");
+        graph.addVerticesAndEdge("d", "f");
+        graph.addVerticesAndEdge("d", "g");
 
-        testGraph.addVerticesAndEdge("e", "f");
-        testGraph.addVerticesAndEdge("e", "g");
-        testGraph.addVerticesAndEdge("e", "h");
+        graph.addVerticesAndEdge("e", "f");
+        graph.addVerticesAndEdge("e", "g");
+        graph.addVerticesAndEdge("e", "h");
 
         // no-op lambdas
-        Predicate<Vertex<String>> keepGoing = (Vertex<String> v) -> { return true; } ;
-        Consumer<Vertex<String>> visitCompletedConsumer =
-                (Vertex<String> v) -> {
-                    System.out.println ("Completed visiting vertex " + v.getIdStr());
-                    return;
-                } ;
+        Predicate<Vertex<String>> keepGoing = (Vertex<String> v) -> {
+            return true;
+        };
 
-        Predicate<Vertex<String>> stopAtE = (Vertex<String> v) -> { return (v.getId().equals("e")); } ;
-        Predicate<Vertex<String>> stopAtf = (Vertex<String> v) -> { return (v.getId().equals("f")); } ;
+        BiConsumer<Vertex<String>, List<Edge<String>>> visitCompletedConsumer_a_all =
+                (Vertex<String> v,List<Edge<String>> path) -> {
+                    System.out.println("For vertex " + v.getIdStr()  + " Found path " + path);
+                    if ( v.getId().equals("b")) {
+                        Assert.assertEquals(path.size(), 1);
+                    }
+                    if ( v.getId().equals("c")) {
+                        Assert.assertEquals(path.size(), 1);
+                    }
+                    if ( v.getId().equals("d")) {
+                        Assert.assertEquals(path.size(), 1);
+                    }
+                    if ( v.getId().equals("e")) {
+                        Assert.assertEquals(path.size(), 2);
+                    }
+                    if ( v.getId().equals("f")) {
+                        Assert.assertEquals(path.size(), 2);
+                    }
+                    if ( v.getId().equals("g")) {
+                        Assert.assertEquals(path.size(), 2);
+                    }
+                    if ( v.getId().equals("h")) {
+                        Assert.assertEquals(path.size(), 3);
+                    }
+                    return;
+                };
 
         // make assertions after traversal is complete
-        Consumer<Graph<String>> traversalCompletedConsumer_a =
-                (Graph<String> graph) -> {
+        Consumer<Map<Vertex<String>, List<Edge<String>>>> traversalCompletedConsumer_a_all =
+                (Map<Vertex<String>, List<Edge<String>>> pathsToVertices) -> {
                     // All vertices must have been visited when starting from a
-                    graph.getVertices().forEach( (Vertex<String> v) -> Assert.assertTrue(v.isVisited()));
+                    graph.getVertices().forEach((Vertex<String> v) -> Assert.assertTrue(v.isVisited()));
                     Assert.assertEquals(graph.getVertex("a").getHopCount(), 0);
                     Assert.assertEquals(graph.getVertex("b").getHopCount(), 1);
                     Assert.assertEquals(graph.getVertex("c").getHopCount(), 1);
@@ -186,7 +242,73 @@ public class GraphTest {
                     Assert.assertEquals(graph.getVertex("h").getHopCount(), 3);
                 };
 
-        testGraph.performBreadthFirstTraversal( testGraph.getVertex("a"), visitCompletedConsumer, traversalCompletedConsumer_a, keepGoing);
+        System.out.println();
+        System.out.println("testPerformBreadthFirstTraversal_2" + "Starting traversal from a");
+        graph.performBreadthFirstTraversal(graph.getVertex("a"), visitCompletedConsumer_a_all, traversalCompletedConsumer_a_all, keepGoing);
+
+
+
+        // starting at b and stopping at f
+        // cannot make any predictions if g will be reached or traversal will stop before g
+        // but h cannot be visited
+
+        // stop at f
+        Predicate<Vertex<String>> keepGoingTillF = (Vertex<String> v) -> {
+            return ( ! v.getId().equals("f"));
+        };
+
+        BiConsumer<Vertex<String>, List<Edge<String>>> visitCompletedConsumer_b_to_f =
+                (Vertex<String> v,List<Edge<String>> path) -> {
+                    System.out.println("For vertex " + v.getIdStr() + " Found path " + path);
+                    Assert.assertFalse( v.getId().equals("h")); // cannot come to h
+                    if ( v.getId().equals("a")) {
+                        Assert.assertEquals(path.size(), 2);
+                    }
+                    if ( v.getId().equals("b")) {
+                        Assert.assertEquals(path.size(), 0);
+                    }
+                    if ( v.getId().equals("c")) {
+                        Assert.assertEquals(path.size(), 1);
+                    }
+                    if ( v.getId().equals("d")) {
+                        Assert.assertEquals(path.size(), 1);
+                    }
+                    if ( v.getId().equals("e")) {
+                        Assert.assertEquals(path.size(), 1);
+                    }
+                    if ( v.getId().equals("g")) {
+                        // if g is reached at all, then size has to be 2
+                        Assert.assertEquals(path.size(), 2);
+                    }
+                    if ( v.getId().equals("f")) {
+                        Assert.assertEquals(path.size(), 2);
+                    }
+                    return;
+                };
+
+        // make assertions after traversal is complete
+        Consumer<Map<Vertex<String>, List<Edge<String>>>> traversalCompletedConsumer_b_to_f =
+                (Map<Vertex<String>, List<Edge<String>>> pathsToVertices) -> {
+                    // All vertices must have been visited when starting from a
+                    Assert.assertEquals(graph.getVertex("b").getHopCount(), 0);
+                    Assert.assertEquals(graph.getVertex("c").getHopCount(), 1);
+                    Assert.assertEquals(graph.getVertex("d").getHopCount(), 1);
+                    Assert.assertEquals(graph.getVertex("e").getHopCount(), 1);
+                    Assert.assertEquals(graph.getVertex("f").getHopCount(), 2);
+                    Assert.assertEquals(graph.getVertex("h").getHopCount(), 0);
+                    // if g is reached, hop count has to be 2
+                    Vertex<String> gVertex = graph.getVertex("g");
+                    int gHopCout = gVertex.getHopCount();
+                    Assert.assertTrue((gVertex.isVisited()) ? (gHopCout == 2) : (gHopCout == 0));
+                    // if a is reached, hop count has to be 2
+                    Vertex<String> aVertex = graph.getVertex("g");
+                    int aHopCout = aVertex.getHopCount();
+                    Assert.assertTrue( (aVertex.isVisited()) ? (aHopCout == 2) : (aHopCout==0));
+                };
+
+        System.out.println();
+        System.out.println("testPerformBreadthFirstTraversal_2" + "Starting traversal from b");
+        graph.performBreadthFirstTraversal(graph.getVertex("b"), visitCompletedConsumer_b_to_f, traversalCompletedConsumer_b_to_f, keepGoingTillF);
 
     }
 

@@ -16,6 +16,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -84,22 +85,27 @@ public class Graph<IdType extends Comparable<IdType>> {
     /**
      * Not thread safe
      * <p/>
-     * NOTE : keepGoing.test will be called before visitCompletedConsumer.accept is called
+     * NOTE : keepGoing.test will be called AFTER visitCompletedConsumer.accept is called
      *
      * @param startVertex
      * @param visitCompletedConsumer
      * @param keepGoing
      */
     public void performBreadthFirstTraversal(Vertex<IdType> startVertex,
-                                      Consumer<Vertex<IdType>> visitCompletedConsumer,
-                                      Consumer<Graph<IdType>> traversalCompletedConsumer,
+                                      BiConsumer<Vertex<IdType>, List<Edge<IdType>>> visitCompletedConsumer,
+                                      Consumer<Map<Vertex<IdType>, List<Edge<IdType>>>> traversalCompletedConsumer,
                                       Predicate<Vertex<IdType>> keepGoing) {
 
         Preconditions.checkArgument(vertices.contains(startVertex), "Start vertex not found");
 
+        // start with a clean slate
         resetTraversalInfo();
 
-        // vertices to visit, in the order
+        // destination vertices and their paths
+        Map<Vertex<IdType>, List<Edge<IdType>>> allPathsFromStartingVertex = new HashMap<>();
+
+        // vertices to traverse from, in desired order
+        // with paths to them from starting vertex
         Queue<Vertex<IdType>> verticesToTraverse = new LinkedList<>();
 
         // visit the start vertex
@@ -108,19 +114,28 @@ public class Graph<IdType extends Comparable<IdType>> {
         startVertex.setCumulativeWight(0.0);
         // should stop right now?
         if ( ! keepGoing.test(startVertex)) {
-            traversalCompletedConsumer.accept(this);
+            traversalCompletedConsumer.accept(allPathsFromStartingVertex);
+            // end with a clean slate
             resetTraversalInfo();
             return;
         }
 
         // init the queue with start vertex
         verticesToTraverse.add(startVertex);
+        // path to start vertex from start vertex is obviously empty
+        allPathsFromStartingVertex.put (startVertex, new ArrayList<Edge<IdType>>());
 
         boolean doneTraversing = false;
         while ( (!verticesToTraverse.isEmpty()) && ( !doneTraversing)) {
 
+            //System.out.println("Current queue is " + verticesToTraverse);
+
             // get the first vertex out of the queue
             Vertex currentVertex = verticesToTraverse.remove();
+            //System.out.println("Current vertex is " + currentVertex.getIdStr());
+
+            // path to the currentVertex, will be used for neighbors
+            List<Edge<IdType>> pathToCurrentVertex = allPathsFromStartingVertex.get(currentVertex);
 
             // get destinationPairs, and if they are not visited yet, add them to the queue
             List<SimpleImmutableEntry<Vertex<IdType>, Edge<IdType>>> destinationPairs = getGraphSpecificDestinations(currentVertex);
@@ -128,14 +143,26 @@ public class Graph<IdType extends Comparable<IdType>> {
 
                 Vertex<IdType> destinationVertex = destinationPair.getKey();
                 Edge<IdType> destinationEdge = destinationPair.getValue();
+                //System.out.println("----- looking at destination " + destinationVertex.getIdStr() + " isVisited=" + destinationVertex.isVisited() + " from edge " + destinationEdge.toString());
 
                 if (destinationVertex.isVisited()) {
                     continue;
                 }
 
+                // visit the vertex
                 destinationVertex.setIsVisited(true);
-                destinationVertex.setHopCount( currentVertex.getHopCount() + 1);
-                destinationVertex.addToCumulativeWeight( destinationEdge.getForwardWeight());
+                destinationVertex.setHopCount(currentVertex.getHopCount() + 1);
+                destinationVertex.addToCumulativeWeight(destinationEdge.getForwardWeight());
+
+                // update the path to the visited vertex
+                List<Edge<IdType>> pathToDestinationVertex = new ArrayList<>();
+                pathToDestinationVertex.addAll(pathToCurrentVertex); // path from starting vertex
+                pathToDestinationVertex.add(destinationEdge); // append with the edge used to traverse
+                // add the path to all paths
+                allPathsFromStartingVertex.put (destinationVertex, pathToDestinationVertex);
+
+                // note the completion of visit
+                visitCompletedConsumer.accept(destinationVertex, pathToDestinationVertex);
 
                 // should the traversal stop at this vertex
                 if ( ! keepGoing.test(destinationVertex)) {
@@ -145,13 +172,11 @@ public class Graph<IdType extends Comparable<IdType>> {
 
                 verticesToTraverse.add(destinationVertex);
             }
-
-            // note the completion of visit
-            visitCompletedConsumer.accept(currentVertex);
         }
 
-        traversalCompletedConsumer.accept(this);
+        traversalCompletedConsumer.accept(allPathsFromStartingVertex);
 
+        // end with a clean slate
         resetTraversalInfo();
 
     }
