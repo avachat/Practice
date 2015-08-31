@@ -1,5 +1,7 @@
 package avachat.common.graph;
 
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -67,6 +69,63 @@ public class GraphTest {
         Assert.assertTrue(graph.getVertex("b").isDestinationOf(new Vertex<String>("c")));
         Assert.assertTrue(graph.getVertex("e").isDestinationOf(new Vertex<String>("c")));
         Assert.assertTrue(graph.getVertex("e").isDestinationOf(new Vertex<String>("d")));
+
+    }
+
+
+    @Test
+    public void testPerformBreadthFirstTraversal_1 () {
+
+        Graph<String> testGraph = new Graph<String>();
+
+        testGraph.addVerticesAndEdge("a", "b");
+        testGraph.addVerticesAndEdge("a", "c");
+        testGraph.addVerticesAndEdge("a", "d");
+        testGraph.addVerticesAndEdge("a", "e");
+
+        testGraph.addVerticesAndEdge("b", "c");
+        testGraph.addVerticesAndEdge("b", "d");
+
+        testGraph.addVerticesAndEdge("c", "b");
+        testGraph.addVerticesAndEdge("c", "e");
+
+        testGraph.addVerticesAndEdge("d", "e");
+
+        // no-op lambdas
+        Predicate<Vertex<String>> keepGoing = (Vertex<String> v) -> { return true; } ;
+        Consumer<Vertex<String>> visitCompletedConsumer =
+                (Vertex<String> v) -> {
+                    System.out.println ("Completed visiting vertex " + v.getIdStr());
+                    return;
+                } ;
+
+        // make assertions after traversal is complete
+        Consumer<Graph<String>> traversalCompletedConsumer_a =
+                (Graph<String> graph) -> {
+                    // All vertices must have been visited when starting from a
+                    graph.getVertices().forEach( (Vertex<String> v) -> Assert.assertTrue(v.isVisited()));
+                    // all vertices except a have hop count of 1
+                    Assert.assertEquals(graph.getVertex("a").getHopCount(), 0);
+                    Assert.assertEquals(graph.getVertex("b").getHopCount(), 1);
+                    Assert.assertEquals(graph.getVertex("c").getHopCount(), 1);
+                    Assert.assertEquals(graph.getVertex("d").getHopCount(), 1);
+                    Assert.assertEquals(graph.getVertex("e").getHopCount(), 1);
+                };
+
+        testGraph.performBreadthFirstTraversal( testGraph.getVertex("a"), visitCompletedConsumer, traversalCompletedConsumer_a, keepGoing);
+
+        // make assertions after traversal is complete
+        Consumer<Graph<String>> traversalCompletedConsumer_b =
+                (Graph<String> graph) -> {
+                    // all vertices except a have hop count of 1
+                    Assert.assertEquals(graph.getVertex("a").getHopCount(), 0);
+                    Assert.assertEquals(graph.getVertex("b").getHopCount(), 0);
+                    Assert.assertEquals(graph.getVertex("c").getHopCount(), 1);
+                    Assert.assertEquals(graph.getVertex("d").getHopCount(), 1);
+                    Assert.assertEquals(graph.getVertex("e").getHopCount(), 1);
+                };
+
+        testGraph.performBreadthFirstTraversal( testGraph.getVertex("b"), visitCompletedConsumer, traversalCompletedConsumer_b, keepGoing);
 
     }
 

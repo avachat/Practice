@@ -55,7 +55,7 @@ public class Edge<IdType extends Comparable<IdType>> {
      * @param destination
      */
     public Edge (Vertex<IdType> source, Vertex<IdType> destination) {
-        this (source, destination, false, 1.0, 1.0);
+        this (source, destination, true, 1.0, 1.0);
     }
 
     /**

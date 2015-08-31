@@ -27,7 +27,12 @@ public class Vertex<IdType extends Comparable<IdType>> {
     private final Map<Vertex<IdType>, Set<Edge<IdType>>> sources;
     private final Map<Vertex<IdType>, Set<Edge<IdType>>> destinations;
 
+    /**
+     * Following variables are useful to traversal algorithms
+     */
     private boolean isVisited = false;
+    private int hopCount = 0;
+    private double cumulativeWight = 0.0;
 
     public Vertex (IdType id) {
 
@@ -40,6 +45,8 @@ public class Vertex<IdType extends Comparable<IdType>> {
         this.destinations = new HashMap<Vertex<IdType>, Set<Edge<IdType>>>();
 
         this.isVisited = false;
+        this.hopCount = 0;
+        this.cumulativeWight = 0.0;
     }
 
     public void addDestination(Vertex<IdType> destination, Edge<IdType> edge) {
@@ -92,6 +99,83 @@ public class Vertex<IdType extends Comparable<IdType>> {
         return ( isSourceOf(other) || isDestinationOf(other));
     }
 
+    public Set<Edge<IdType>> getSourceEdges() {
+        Set<Edge<IdType>> allEdges = new HashSet<Edge<IdType>>();
+        for (Set<Edge<IdType>> edgeSet : sources.values()) {
+            allEdges.addAll(edgeSet);
+        }
+        return allEdges;
+    }
+
+    public Set<Edge<IdType>> getDestinationEdges() {
+        Set<Edge<IdType>> allEdges = new HashSet<Edge<IdType>>();
+        for (Set<Edge<IdType>> edgeSet : destinations.values()) {
+            allEdges.addAll(edgeSet);
+        }
+        return allEdges;
+    }
+
+    public Set<Vertex<IdType>> getSourceVertices() {
+        return sources.keySet();
+    }
+
+    public Set<Vertex<IdType>> getDestinationVertices() {
+        return destinations.keySet();
+    }
+
+    public IdType getId() {
+        return id;
+    }
+
+    public Map<Vertex<IdType>, Set<Edge<IdType>>> getSources() {
+        return sources;
+    }
+
+    public Map<Vertex<IdType>, Set<Edge<IdType>>> getDestinations() {
+        return destinations;
+    }
+
+    public boolean isVisited() {
+        return isVisited;
+    }
+
+    public void setIsVisited(boolean isVisited) {
+        this.isVisited = isVisited;
+    }
+
+    public int getHopCount() {
+        return hopCount;
+    }
+
+    public void setHopCount(int hopCount) {
+        this.hopCount = hopCount;
+    }
+
+    public double getCumulativeWight() {
+        return cumulativeWight;
+    }
+
+    public void setCumulativeWight(double cumulativeWight) {
+        this.cumulativeWight = cumulativeWight;
+    }
+
+    public int incrementHopCount() {
+        return ++hopCount;
+    }
+
+    public double addToCumulativeWeight(double forwardWeight) {
+        cumulativeWight += forwardWeight;
+        return cumulativeWight;
+    }
+
+    /**
+     * Helper
+     * @return
+     */
+    public String getIdStr() {
+        return id.toString();
+    }
+
     @Override
     public boolean equals (Object obj) {
 
@@ -117,53 +201,9 @@ public class Vertex<IdType extends Comparable<IdType>> {
         return Objects.hashCode(id);
     }
 
-    public IdType getId() {
-        return id;
-    }
-
-    public boolean isVisited() {
-        return isVisited;
-    }
-
-    public void setIsVisited(boolean isVisited) {
-        this.isVisited = isVisited;
-    }
-
-    public Set<Vertex<IdType>> getSourceVertices() {
-        return sources.keySet();
-    }
-
-    public Set<Vertex<IdType>> getDestinationVertices() {
-        return destinations.keySet();
-    }
-
-    public Set<Edge<IdType>> getSourceEdges() {
-        Set<Edge<IdType>> allEdges = new HashSet<Edge<IdType>>();
-        for (Set<Edge<IdType>> edgeSet : sources.values()) {
-            allEdges.addAll(edgeSet);
-        }
-        return allEdges;
-    }
-
-    public Set<Edge<IdType>> getDestinationEdges() {
-        Set<Edge<IdType>> allEdges = new HashSet<Edge<IdType>>();
-        for (Set<Edge<IdType>> edgeSet : destinations.values()) {
-            allEdges.addAll(edgeSet);
-        }
-        return allEdges;
-    }
-
     /**
      * TODO : Implement Comparable interface directly in Vertex.
      *
-     * Helper
-     * @return
-     */
-    public String getIdStr() {
-        return id.toString();
-    }
-
-    /**
      * Compares based on IDs
      */
     public static class VertexIdComparator<IdType extends Comparable<IdType>> implements Comparator<Vertex<IdType>> {
