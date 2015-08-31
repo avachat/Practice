@@ -100,22 +100,27 @@ public class Graph<IdType extends Comparable<IdType>> {
         resetTraversalInfo();
 
         // vertices to visit, in the order
-        Queue<Vertex<IdType>> verticesToVisit = new LinkedList<>();
-        // init with start vertex
-        verticesToVisit.add(startVertex);
+        Queue<Vertex<IdType>> verticesToTraverse = new LinkedList<>();
 
-        while (!verticesToVisit.isEmpty()) {
+        // visit the start vertex
+        startVertex.setIsVisited(true);
+        startVertex.setHopCount(0);
+        startVertex.setCumulativeWight(0.0);
+        // should stop right now?
+        if ( ! keepGoing.test(startVertex)) {
+            traversalCompletedConsumer.accept(this);
+            resetTraversalInfo();
+            return;
+        }
+
+        // init the queue with start vertex
+        verticesToTraverse.add(startVertex);
+
+        boolean doneTraversing = false;
+        while ( (!verticesToTraverse.isEmpty()) && ( !doneTraversing)) {
 
             // get the first vertex out of the queue
-            Vertex currentVertex = verticesToVisit.remove();
-
-            // should stop at this vertex?
-            if (!keepGoing.test(currentVertex)) {
-                break;
-            }
-
-            // set the flag as visited, so even if there is a self edge, it will not add the same vertex again
-            currentVertex.setIsVisited(true);
+            Vertex currentVertex = verticesToTraverse.remove();
 
             // get destinationPairs, and if they are not visited yet, add them to the queue
             List<SimpleImmutableEntry<Vertex<IdType>, Edge<IdType>>> destinationPairs = getGraphSpecificDestinations(currentVertex);
@@ -129,9 +134,16 @@ public class Graph<IdType extends Comparable<IdType>> {
                 }
 
                 destinationVertex.setIsVisited(true);
-                destinationVertex.incrementHopCount();
-                destinationVertex.addToCumulativeWeight(destinationEdge.getForwardWeight());
-                verticesToVisit.add(destinationVertex);
+                destinationVertex.setHopCount( currentVertex.getHopCount() + 1);
+                destinationVertex.addToCumulativeWeight( destinationEdge.getForwardWeight());
+
+                // should the traversal stop at this vertex
+                if ( ! keepGoing.test(destinationVertex)) {
+                    doneTraversing = true;
+                    break;
+                }
+
+                verticesToTraverse.add(destinationVertex);
             }
 
             // note the completion of visit

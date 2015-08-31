@@ -95,7 +95,7 @@ public class GraphTest {
         Predicate<Vertex<String>> keepGoing = (Vertex<String> v) -> { return true; } ;
         Consumer<Vertex<String>> visitCompletedConsumer =
                 (Vertex<String> v) -> {
-                    System.out.println ("Completed visiting vertex " + v.getIdStr());
+                    //System.out.println ("Completed visiting vertex " + v.getIdStr());
                     return;
                 } ;
 
@@ -122,10 +122,71 @@ public class GraphTest {
                     Assert.assertEquals(graph.getVertex("b").getHopCount(), 0);
                     Assert.assertEquals(graph.getVertex("c").getHopCount(), 1);
                     Assert.assertEquals(graph.getVertex("d").getHopCount(), 1);
-                    Assert.assertEquals(graph.getVertex("e").getHopCount(), 1);
+                    Assert.assertEquals(graph.getVertex("e").getHopCount(), 2);
                 };
 
         testGraph.performBreadthFirstTraversal( testGraph.getVertex("b"), visitCompletedConsumer, traversalCompletedConsumer_b, keepGoing);
+
+    }
+
+
+    /**
+     * Test for a more complicated, deeper graph
+     */
+    @Test
+    public void testPerformBreadthFirstTraversal_2() {
+
+        Graph<String> testGraph = new Graph<>();
+
+        testGraph.addVerticesAndEdge("a", "b");
+        testGraph.addVerticesAndEdge("a", "c");
+        testGraph.addVerticesAndEdge("a", "d");
+
+        testGraph.addVerticesAndEdge("b", "c");
+        testGraph.addVerticesAndEdge("b", "d");
+        testGraph.addVerticesAndEdge("b", "e");
+
+        testGraph.addVerticesAndEdge("c", "a"); // cycle
+        testGraph.addVerticesAndEdge("c", "d");
+        testGraph.addVerticesAndEdge("c", "e");
+        testGraph.addVerticesAndEdge("c", "f");
+
+        testGraph.addVerticesAndEdge("d", "b"); // cycle
+        testGraph.addVerticesAndEdge("d", "e");
+        testGraph.addVerticesAndEdge("d", "f");
+        testGraph.addVerticesAndEdge("d", "g");
+
+        testGraph.addVerticesAndEdge("e", "f");
+        testGraph.addVerticesAndEdge("e", "g");
+        testGraph.addVerticesAndEdge("e", "h");
+
+        // no-op lambdas
+        Predicate<Vertex<String>> keepGoing = (Vertex<String> v) -> { return true; } ;
+        Consumer<Vertex<String>> visitCompletedConsumer =
+                (Vertex<String> v) -> {
+                    System.out.println ("Completed visiting vertex " + v.getIdStr());
+                    return;
+                } ;
+
+        Predicate<Vertex<String>> stopAtE = (Vertex<String> v) -> { return (v.getId().equals("e")); } ;
+        Predicate<Vertex<String>> stopAtf = (Vertex<String> v) -> { return (v.getId().equals("f")); } ;
+
+        // make assertions after traversal is complete
+        Consumer<Graph<String>> traversalCompletedConsumer_a =
+                (Graph<String> graph) -> {
+                    // All vertices must have been visited when starting from a
+                    graph.getVertices().forEach( (Vertex<String> v) -> Assert.assertTrue(v.isVisited()));
+                    Assert.assertEquals(graph.getVertex("a").getHopCount(), 0);
+                    Assert.assertEquals(graph.getVertex("b").getHopCount(), 1);
+                    Assert.assertEquals(graph.getVertex("c").getHopCount(), 1);
+                    Assert.assertEquals(graph.getVertex("d").getHopCount(), 1);
+                    Assert.assertEquals(graph.getVertex("e").getHopCount(), 2);
+                    Assert.assertEquals(graph.getVertex("f").getHopCount(), 2);
+                    Assert.assertEquals(graph.getVertex("g").getHopCount(), 2);
+                    Assert.assertEquals(graph.getVertex("h").getHopCount(), 3);
+                };
+
+        testGraph.performBreadthFirstTraversal( testGraph.getVertex("a"), visitCompletedConsumer, traversalCompletedConsumer_a, keepGoing);
 
     }
 
