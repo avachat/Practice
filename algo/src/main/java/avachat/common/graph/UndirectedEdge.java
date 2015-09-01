@@ -79,4 +79,9 @@ public class UndirectedEdge<IdType extends Comparable<IdType>> extends Edge<IdTy
         return Objects.hash(lowerVertex, upperVertex);
     }
 
+
+    @Override
+    public String toString() {
+        return "(" + source + "--" + destination + ")";
+    }
 }

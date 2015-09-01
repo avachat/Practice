@@ -138,7 +138,7 @@ public class Graph<IdType extends Comparable<IdType>> {
             List<Edge<IdType>> pathToCurrentVertex = allPathsFromStartingVertex.get(currentVertex);
 
             // get destinationPairs, and if they are not visited yet, add them to the queue
-            List<SimpleImmutableEntry<Vertex<IdType>, Edge<IdType>>> destinationPairs = getGraphSpecificDestinations(currentVertex);
+            List<SimpleImmutableEntry<Vertex<IdType>, Edge<IdType>>> destinationPairs = getSortedGraphSpecificDestinations(currentVertex);
             for (SimpleImmutableEntry<Vertex<IdType>, Edge<IdType>> destinationPair : destinationPairs) {
 
                 Vertex<IdType> destinationVertex = destinationPair.getKey();
@@ -197,11 +197,11 @@ public class Graph<IdType extends Comparable<IdType>> {
      * @param vertex
      * @return
      */
-    protected List<SimpleImmutableEntry<Vertex<IdType>, Edge<IdType>>> getGraphSpecificDestinations(Vertex<IdType> vertex) {
+    protected List<SimpleImmutableEntry<Vertex<IdType>, Edge<IdType>>> getSortedGraphSpecificDestinations(Vertex<IdType> vertex) {
 
         List neighborsList = new ArrayList<SimpleImmutableEntry<Vertex<IdType>, Edge<IdType>>>();
 
-        Map<Vertex<IdType>, Set<Edge<IdType>>> neighborsMap = vertex.getDestinations();
+        Map<Vertex<IdType>, Set<Edge<IdType>>> neighborsMap = getGraphSpecificDestinations(vertex);
 
         for ( Vertex<IdType> neighbor : neighborsMap.keySet()) {
             // pick the first edge
@@ -210,6 +210,19 @@ public class Graph<IdType extends Comparable<IdType>> {
         }
 
         return neighborsList;
+    }
+
+
+    /**
+     * Allow derived classes to override this method
+     *
+     * Return only proper destinations.
+     *
+     * @param vertex
+     * @return
+     */
+    protected Map<Vertex<IdType>, Set<Edge<IdType>>> getGraphSpecificDestinations (Vertex<IdType> vertex) {
+        return vertex.getDestinations();
     }
 
 

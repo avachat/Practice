@@ -1,6 +1,8 @@
 package avachat.common.graph;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -116,11 +118,11 @@ public class Vertex<IdType extends Comparable<IdType>> {
     }
 
     public Set<Vertex<IdType>> getSourceVertices() {
-        return sources.keySet();
+        return ImmutableSet.copyOf(sources.keySet());
     }
 
     public Set<Vertex<IdType>> getDestinationVertices() {
-        return destinations.keySet();
+        return ImmutableSet.copyOf(destinations.keySet());
     }
 
     public IdType getId() {
@@ -128,11 +130,11 @@ public class Vertex<IdType extends Comparable<IdType>> {
     }
 
     public Map<Vertex<IdType>, Set<Edge<IdType>>> getSources() {
-        return sources;
+        return ImmutableMap.copyOf(sources);
     }
 
     public Map<Vertex<IdType>, Set<Edge<IdType>>> getDestinations() {
-        return destinations;
+        return ImmutableMap.copyOf(destinations);
     }
 
     public boolean isVisited() {

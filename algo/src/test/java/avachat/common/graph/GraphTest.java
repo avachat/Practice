@@ -289,7 +289,6 @@ public class GraphTest {
         // make assertions after traversal is complete
         Consumer<Map<Vertex<String>, List<Edge<String>>>> traversalCompletedConsumer_b_to_f =
                 (Map<Vertex<String>, List<Edge<String>>> pathsToVertices) -> {
-                    // All vertices must have been visited when starting from a
                     Assert.assertEquals(graph.getVertex("b").getHopCount(), 0);
                     Assert.assertEquals(graph.getVertex("c").getHopCount(), 1);
                     Assert.assertEquals(graph.getVertex("d").getHopCount(), 1);
@@ -301,7 +300,7 @@ public class GraphTest {
                     int gHopCout = gVertex.getHopCount();
                     Assert.assertTrue((gVertex.isVisited()) ? (gHopCout == 2) : (gHopCout == 0));
                     // if a is reached, hop count has to be 2
-                    Vertex<String> aVertex = graph.getVertex("g");
+                    Vertex<String> aVertex = graph.getVertex("a");
                     int aHopCout = aVertex.getHopCount();
                     Assert.assertTrue( (aVertex.isVisited()) ? (aHopCout == 2) : (aHopCout==0));
                 };
