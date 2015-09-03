@@ -1,6 +1,8 @@
 package avachat.common.math;
 
 /**
+ * Helper to generate primes.
+ *
  * Created by avachat on 8/18/15.
  */
 
@@ -17,10 +19,11 @@ public class PrimeGenerator {
 
         // consider all numbers as prime to begin with
         // init array of N flags to false, if explicit init needed for your language
-        boolean is_non_prime[] = new boolean [N+1] ; // first index is 0
+        boolean[] is_non_prime = new boolean[N + 1]; // first index is 0
 
         is_non_prime [0] = is_non_prime [1] = true ; // 0 and 1 are not considered primes
 
+        @SuppressWarnings("unused")
         int K = 0 ; // iterations
 
         for (int candidate = 2 ; candidate*candidate <= N ; candidate ++) {
@@ -47,7 +50,7 @@ public class PrimeGenerator {
         return num_primes;
     }
 
-    public static void main (String args[]) {
+    public static void main (@SuppressWarnings("unused") String[] args) {
 
         int N = Integer.parseInt (args[0]) ;
         int[] primes = new int[N];

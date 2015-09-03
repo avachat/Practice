@@ -5,30 +5,31 @@ import com.google.common.base.Preconditions;
 import java.util.Objects;
 
 /**
+ * Class to model undirected graph.
  * Created by avachat on 8/25/15.
  */
-public class UndirectedEdge<IdType extends Comparable<IdType>> extends Edge<IdType> {
+public class UndirectedEdge<T extends Comparable<T>> extends Edge<T> {
 
     //
     // Just diff names for source and destinations based on their natural sorting order
-    protected final Vertex<IdType> lowerVertex, upperVertex;
+    protected final Vertex<T> lowerVertex, upperVertex;
 
     /**
      * Creates an undirectional edge
      *
-     * @param source
-     * @param destination
-     * @param forwardWeight
-     * @param backwardWeight
+     * @param source source
+     * @param destination destination
+     * @param forwardWeight forward weight
+     * @param backwardWeight backward weight
      */
-    public UndirectedEdge(Vertex<IdType> source, Vertex<IdType> destination, double forwardWeight, double backwardWeight) {
+    public UndirectedEdge(Vertex<T> source, Vertex<T> destination, double forwardWeight, double backwardWeight) {
 
         super(source, destination, false, forwardWeight, backwardWeight);
 
         // Self edges are not allowed
         Preconditions.checkArgument( !(source.equals(destination)), "Source and vertex cannot be same");
 
-        VertexIdComparator<IdType> vertexIdComparator = new VertexIdComparator<IdType>();
+        VertexIdComparator<T> vertexIdComparator = new VertexIdComparator<>();
 
         if (vertexIdComparator.compare(source, destination) == 0) {
             throw new IllegalArgumentException("Source and destination cannot be same");
@@ -47,10 +48,10 @@ public class UndirectedEdge<IdType extends Comparable<IdType>> extends Edge<IdTy
     /**
      * Helper constructor
      *
-     * @param source
-     * @param destination
+     * @param source source
+     * @param destination destination
      */
-    public UndirectedEdge(Vertex<IdType> source, Vertex<IdType> destination) {
+    public UndirectedEdge(Vertex<T> source, Vertex<T> destination) {
         this(source, destination, 1.0, 1.0);
     }
 
@@ -65,7 +66,8 @@ public class UndirectedEdge<IdType extends Comparable<IdType>> extends Edge<IdTy
             return false;
         }
 
-        UndirectedEdge<IdType> other = (UndirectedEdge<IdType>) obj;
+        @SuppressWarnings("unchecked")
+        UndirectedEdge<T> other = (UndirectedEdge<T>) obj;
 
         if (this == other) {
             return true;

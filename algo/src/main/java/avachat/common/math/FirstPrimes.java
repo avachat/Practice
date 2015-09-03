@@ -1,5 +1,6 @@
 package avachat.common.math;
 
+@SuppressWarnings("unused")
 public class FirstPrimes {
 
 public static final int NUM_PRIMES = 1000;
