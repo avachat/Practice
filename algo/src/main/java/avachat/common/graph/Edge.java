@@ -15,11 +15,11 @@ import java.util.Objects;
  *
  * Created by avachat on 8/19/15.
  */
-public class Edge<IdType extends Comparable<IdType>> {
+public class Edge<T extends Comparable<T>> {
 
     protected final boolean isDirectional;
-    protected final Vertex<IdType> source;
-    protected final Vertex<IdType> destination;
+    protected final Vertex<T> source;
+    protected final Vertex<T> destination;
     protected final double forwardWeight;
     protected final double backwardWeight;
 
@@ -30,10 +30,10 @@ public class Edge<IdType extends Comparable<IdType>> {
      * NOTE : DOES NOT MODIFY THE VERTEX
      * Those integrity constraints are imposed by the Graph object
      *
-     * @param source
-     * @param destination
+     * @param source source
+     * @param destination destination
      */
-    public Edge(Vertex<IdType> source, Vertex<IdType> destination, boolean isDirectional, double forwardWeight, double backwardWeight) {
+    public Edge(Vertex<T> source, Vertex<T> destination, boolean isDirectional, double forwardWeight, double backwardWeight) {
 
         // This implementation allows self edge, source and vertex can be same.
 
@@ -51,20 +51,20 @@ public class Edge<IdType extends Comparable<IdType>> {
     /**
      * Helper construtor
      *
-     * @param source
-     * @param destination
+     * @param source source
+     * @param destination destination
      */
-    public Edge (Vertex<IdType> source, Vertex<IdType> destination) {
+    public Edge (Vertex<T> source, Vertex<T> destination) {
         this (source, destination, true, 1.0, 1.0);
     }
 
     /**
      * Helper construtor
      *
-     * @param source
-     * @param destination
+     * @param source source
+     * @param destination destination
      */
-    public Edge (Vertex<IdType> source, Vertex<IdType> destination, boolean isDirectional) {
+    public Edge (Vertex<T> source, Vertex<T> destination, boolean isDirectional) {
         this (source, destination, isDirectional, 1.0, 1.0);
     }
 
@@ -79,7 +79,8 @@ public class Edge<IdType extends Comparable<IdType>> {
             return false;
         }
 
-        Edge<IdType> other = (Edge) obj;
+        @SuppressWarnings("unchecked")
+        Edge<T> other = (Edge<T>) obj;
 
         if (this == other) {
             return true;
@@ -99,15 +100,16 @@ public class Edge<IdType extends Comparable<IdType>> {
         return "(" + source + "->" + destination + ")";
     }
 
+    @SuppressWarnings("unused")
     public boolean isDirectional() {
         return isDirectional;
     }
 
-    public Vertex<IdType> getSource() {
+    public Vertex<T> getSource() {
         return source;
     }
 
-    public Vertex<IdType> getDestination() {
+    public Vertex<T> getDestination() {
         return destination;
     }
 
@@ -115,10 +117,12 @@ public class Edge<IdType extends Comparable<IdType>> {
         return forwardWeight;
     }
 
+    @SuppressWarnings("unused")
     public double getBackwardWeight() {
         return backwardWeight;
     }
 
+    @SuppressWarnings("unused")
     public boolean isVisited() {
         return isVisited;
     }
