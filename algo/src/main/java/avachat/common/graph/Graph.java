@@ -50,7 +50,7 @@ public class Graph<IdType extends Comparable<IdType>> {
         this.edges = new HashSet<Edge<IdType>>();
     }
 
-    protected Vertex<IdType> addVertexIfNeeded(IdType id) {
+    public Vertex<IdType> addVertexIfNeeded(IdType id) {
 
         if (mapIdVertex.containsKey(id)) {
             return mapIdVertex.get(id);
