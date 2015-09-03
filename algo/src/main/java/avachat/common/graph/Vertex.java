@@ -43,8 +43,8 @@ public class Vertex<IdType extends Comparable<IdType>> {
         }
 
         this.id = id;
-        this.sources = new HashMap<Vertex<IdType>, Set<Edge<IdType>>>();
-        this.destinations = new HashMap<Vertex<IdType>, Set<Edge<IdType>>>();
+        this.sources = new HashMap<>();
+        this.destinations = new HashMap<>();
 
         this.isVisited = false;
         this.hopCount = 0;
@@ -61,7 +61,7 @@ public class Vertex<IdType extends Comparable<IdType>> {
 
         Set<Edge<IdType>> setEdges = destinations.get(destination);
         if ( setEdges == null ) {
-            setEdges = new HashSet<Edge<IdType>>();
+            setEdges = new HashSet<>();
             destinations.put(destination, setEdges);
         }
 
@@ -80,7 +80,7 @@ public class Vertex<IdType extends Comparable<IdType>> {
 
         Set<Edge<IdType>> setEdges = sources.get(source);
         if ( setEdges == null ) {
-            setEdges = new HashSet<Edge<IdType>>();
+            setEdges = new HashSet<>();
             sources.put(source, setEdges);
         }
 
@@ -102,18 +102,14 @@ public class Vertex<IdType extends Comparable<IdType>> {
     }
 
     public Set<Edge<IdType>> getSourceEdges() {
-        Set<Edge<IdType>> allEdges = new HashSet<Edge<IdType>>();
-        for (Set<Edge<IdType>> edgeSet : sources.values()) {
-            allEdges.addAll(edgeSet);
-        }
+        Set<Edge<IdType>> allEdges = new HashSet<>();
+        sources.values().forEach((c) -> allEdges.addAll(c));
         return allEdges;
     }
 
     public Set<Edge<IdType>> getDestinationEdges() {
-        Set<Edge<IdType>> allEdges = new HashSet<Edge<IdType>>();
-        for (Set<Edge<IdType>> edgeSet : destinations.values()) {
-            allEdges.addAll(edgeSet);
-        }
+        Set<Edge<IdType>> allEdges = new HashSet<>();
+        destinations.values().forEach((c) -> allEdges.addAll(c));
         return allEdges;
     }
 
@@ -153,6 +149,7 @@ public class Vertex<IdType extends Comparable<IdType>> {
         this.hopCount = hopCount;
     }
 
+    @SuppressWarnings("unused")
     public double getCumulativeWight() {
         return cumulativeWight;
     }
@@ -161,6 +158,7 @@ public class Vertex<IdType extends Comparable<IdType>> {
         this.cumulativeWight = cumulativeWight;
     }
 
+    @SuppressWarnings("unused")
     public int incrementHopCount() {
         return ++hopCount;
     }
@@ -172,7 +170,7 @@ public class Vertex<IdType extends Comparable<IdType>> {
 
     /**
      * Helper
-     * @return
+     * @return debug string
      */
     public String getIdStr() {
         return id.toString();
@@ -193,6 +191,7 @@ public class Vertex<IdType extends Comparable<IdType>> {
             return false;
         }
 
+        @SuppressWarnings("unchecked")
         Vertex<IdType> other = (Vertex<IdType>) obj;
 
         return Objects.equals(this.getId(), other.getId());
