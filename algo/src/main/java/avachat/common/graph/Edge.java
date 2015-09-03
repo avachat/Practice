@@ -10,7 +10,7 @@ import java.util.Objects;
  * This is ensured by implementation of equals.
  *
  * Bidirectional edges will have to implement a stricter criterion.
- * Mult-graph edges will implement equals based on more than just vertices.
+ * Multi-graph edges will implement equals based on more than just vertices.
  * Etc.
  *
  * Created by avachat on 8/19/15.
@@ -49,7 +49,7 @@ public class Edge<T extends Comparable<T>> {
     }
 
     /**
-     * Helper construtor
+     * Helper constructor
      *
      * @param source source
      * @param destination destination
@@ -59,7 +59,7 @@ public class Edge<T extends Comparable<T>> {
     }
 
     /**
-     * Helper construtor
+     * Helper constructor
      *
      * @param source source
      * @param destination destination
