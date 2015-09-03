@@ -79,7 +79,7 @@ public class Edge<IdType extends Comparable<IdType>> {
             return false;
         }
 
-        Edge other = (Edge) obj;
+        Edge<IdType> other = (Edge) obj;
 
         if (this == other) {
             return true;

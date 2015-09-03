@@ -86,15 +86,14 @@ public class Graph<IdType extends Comparable<IdType>> {
      * Not thread safe
      * <p/>
      * NOTE : keepGoing.test will be called AFTER visitCompletedConsumer.accept is called
-     *
-     * @param startVertex
+     *  @param startVertex
      * @param visitCompletedConsumer
      * @param keepGoing
      */
-    public void performBreadthFirstTraversal(Vertex<IdType> startVertex,
-                                      BiConsumer<Vertex<IdType>, List<Edge<IdType>>> visitCompletedConsumer,
-                                      Consumer<Map<Vertex<IdType>, List<Edge<IdType>>>> traversalCompletedConsumer,
-                                      Predicate<Vertex<IdType>> keepGoing) {
+    public Map<Vertex<IdType>, List<Edge<IdType>>> performBreadthFirstTraversal(Vertex<IdType> startVertex,
+                                                                                BiConsumer<Vertex<IdType>, List<Edge<IdType>>> visitCompletedConsumer,
+                                                                                Consumer<Map<Vertex<IdType>, List<Edge<IdType>>>> traversalCompletedConsumer,
+                                                                                Predicate<Vertex<IdType>> keepGoing) {
 
         Preconditions.checkArgument(vertices.contains(startVertex), "Start vertex not found");
 
@@ -117,7 +116,7 @@ public class Graph<IdType extends Comparable<IdType>> {
             traversalCompletedConsumer.accept(allPathsFromStartingVertex);
             // end with a clean slate
             resetTraversalInfo();
-            return;
+            return allPathsFromStartingVertex;
         }
 
         // init the queue with start vertex
@@ -178,6 +177,8 @@ public class Graph<IdType extends Comparable<IdType>> {
 
         // end with a clean slate
         resetTraversalInfo();
+
+        return allPathsFromStartingVertex;
 
     }
 

@@ -1,5 +1,6 @@
 package avachat.common.graph;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -12,6 +13,23 @@ import org.testng.annotations.Test;
  * Created by avachat on 8/28/15.
  */
 public class GraphTest {
+
+    @Test
+    public void testGraphVertexOrder () {
+        Graph<Integer> graph = new Graph<>();
+        graph.addVertexIfNeeded(0);
+        graph.addVertexIfNeeded(1);
+        graph.addVertexIfNeeded(2);
+        graph.addVertexIfNeeded(3);
+
+        int i = 0;
+        Iterator<Vertex<Integer>> iter = graph.getVertices().iterator();
+        while ( iter.hasNext() ) {
+            Vertex<Integer> v = iter.next();
+            Assert.assertEquals(v.getId(), new Integer(i));
+            i++;
+        }
+    }
 
     @Test
     public void testAddVerticesAndEdges() {

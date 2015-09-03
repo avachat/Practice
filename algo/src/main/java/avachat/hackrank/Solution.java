@@ -1,17 +1,22 @@
 package avachat.hackrank;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.ImmutableSortedSet;
+import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * Created by avachat on 8/13/15.
@@ -22,7 +27,203 @@ import java.util.TreeSet;
  */
 public class Solution {
 
-    public class Edge<IdType extends Comparable<IdType>> {
+    public static class Vertex<IdType extends Comparable<IdType>> {
+
+        private final IdType id;
+
+        /**
+         * Edges.
+         * NOTE : Data integrity is maintained by the graph object.
+         */
+        private final Map<Vertex<IdType>, Set<Edge<IdType>>> sources;
+        private final Map<Vertex<IdType>, Set<Edge<IdType>>> destinations;
+
+        /**
+         * Following variables are useful to traversal algorithms
+         */
+        private boolean isVisited = false;
+        private int hopCount = 0;
+        private double cumulativeWight = 0.0;
+
+        public Vertex (IdType id) {
+
+            if ( (id == null) || (id.toString().isEmpty())) {
+                throw new IllegalArgumentException("Vertex id cannot be null");
+            }
+
+            this.id = id;
+            this.sources = new HashMap<Vertex<IdType>, Set<Edge<IdType>>>();
+            this.destinations = new HashMap<Vertex<IdType>, Set<Edge<IdType>>>();
+
+            this.isVisited = false;
+            this.hopCount = 0;
+            this.cumulativeWight = 0.0;
+        }
+
+        public void addDestination(Vertex<IdType> destination, Edge<IdType> edge) {
+
+
+
+            Set<Edge<IdType>> setEdges = destinations.get(destination);
+            if ( setEdges == null ) {
+                setEdges = new HashSet<Edge<IdType>>();
+                destinations.put(destination, setEdges);
+            }
+
+            setEdges.add(edge);
+
+        }
+
+        public void addSource(Vertex<IdType> source, Edge<IdType> edge) {
+
+
+
+            Set<Edge<IdType>> setEdges = sources.get(source);
+            if ( setEdges == null ) {
+                setEdges = new HashSet<Edge<IdType>>();
+                sources.put(source, setEdges);
+            }
+
+            setEdges.add(edge);
+
+        }
+
+        public boolean isSourceOf (Vertex<IdType> other) {
+            return (destinations.containsKey(other));
+        }
+
+        public boolean isDestinationOf (Vertex<IdType> other) {
+            return (sources.containsKey(other));
+        }
+
+        public boolean isConnectedTo (Vertex<IdType> other) {
+            return ( isSourceOf(other) || isDestinationOf(other));
+        }
+
+        public Set<Edge<IdType>> getSourceEdges() {
+            Set<Edge<IdType>> allEdges = new HashSet<Edge<IdType>>();
+            for (Set<Edge<IdType>> edgeSet : sources.values()) {
+                allEdges.addAll(edgeSet);
+            }
+            return allEdges;
+        }
+
+        public Set<Edge<IdType>> getDestinationEdges() {
+            Set<Edge<IdType>> allEdges = new HashSet<Edge<IdType>>();
+            for (Set<Edge<IdType>> edgeSet : destinations.values()) {
+                allEdges.addAll(edgeSet);
+            }
+            return allEdges;
+        }
+
+        public Set<Vertex<IdType>> getSourceVertices() {
+            return (sources.keySet());
+        }
+
+        public Set<Vertex<IdType>> getDestinationVertices() {
+            return (destinations.keySet());
+        }
+
+        public IdType getId() {
+            return id;
+        }
+
+        public Map<Vertex<IdType>, Set<Edge<IdType>>> getSources() {
+            return (sources);
+        }
+
+        public Map<Vertex<IdType>, Set<Edge<IdType>>> getDestinations() {
+            return (destinations);
+        }
+
+        public boolean isVisited() {
+            return isVisited;
+        }
+
+        public void setIsVisited(boolean isVisited) {
+            this.isVisited = isVisited;
+        }
+
+        public int getHopCount() {
+            return hopCount;
+        }
+
+        public void setHopCount(int hopCount) {
+            this.hopCount = hopCount;
+        }
+
+        public double getCumulativeWight() {
+            return cumulativeWight;
+        }
+
+        public void setCumulativeWight(double cumulativeWight) {
+            this.cumulativeWight = cumulativeWight;
+        }
+
+        public int incrementHopCount() {
+            return ++hopCount;
+        }
+
+        public double addToCumulativeWeight(double forwardWeight) {
+            cumulativeWight += forwardWeight;
+            return cumulativeWight;
+        }
+
+        /**
+         * Helper
+         * @return
+         */
+        public String getIdStr() {
+            return id.toString();
+        }
+
+        @Override
+        public boolean equals (Object obj) {
+
+            if ( this == obj ) {
+                return true;
+            }
+
+            if ( obj == null ) {
+                return false;
+            }
+
+            if ( !(obj instanceof Vertex) ) {
+                return false;
+            }
+
+            Vertex<IdType> other = (Vertex<IdType>) obj;
+
+            return Objects.equals(this.getId(), other.getId());
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(id);
+        }
+
+        @Override
+        public String toString() {
+            return getIdStr();
+        }
+
+    }
+
+
+    /**
+     * TODO : Implement Comparable interface directly in Vertex.
+     *
+     * Compares based on IDs
+     */
+    public static class VertexIdComparator<IdType extends Comparable<IdType>> implements Comparator<Vertex<IdType>> {
+
+        public int compare(Vertex<IdType> o1, Vertex<IdType> o2) {
+            return o1.getId().compareTo(o2.getId());
+        }
+    }
+
+
+    public static class Edge<IdType extends Comparable<IdType>> {
 
         protected final boolean isDirectional;
         protected final Vertex<IdType> source;
@@ -44,9 +245,6 @@ public class Solution {
 
             // This implementation allows self edge, source and vertex can be same.
 
-            Preconditions.checkNotNull(source, "source for an edge cannot be null");
-            Preconditions.checkNotNull(destination, "destination for an edge cannot be null");
-
             this.isDirectional = isDirectional;
             this.source = source;
             this.destination = destination;
@@ -61,8 +259,8 @@ public class Solution {
          * @param source
          * @param destination
          */
-        public Edge(Vertex<IdType> source, Vertex<IdType> destination) {
-            this(source, destination, false, 1.0, 1.0);
+        public Edge (Vertex<IdType> source, Vertex<IdType> destination) {
+            this (source, destination, true, 1.0, 1.0);
         }
 
         /**
@@ -71,18 +269,18 @@ public class Solution {
          * @param source
          * @param destination
          */
-        public Edge(Vertex<IdType> source, Vertex<IdType> destination, boolean isDirectional) {
-            this(source, destination, isDirectional, 1.0, 1.0);
+        public Edge (Vertex<IdType> source, Vertex<IdType> destination, boolean isDirectional) {
+            this (source, destination, isDirectional, 1.0, 1.0);
         }
 
         @Override
-        public boolean equals(Object obj) {
+        public boolean equals (Object obj) {
 
             if (obj == null) {
                 return false;
             }
 
-            if (!(obj instanceof Edge)) {
+            if ( ! (obj instanceof Edge)) {
                 return false;
             }
 
@@ -92,7 +290,7 @@ public class Solution {
                 return true;
             }
 
-            return ((this.source.equals(other.source))
+            return ( (this.source.equals(other.source))
                     && (this.destination.equals(other.destination)));
         }
 
@@ -101,6 +299,10 @@ public class Solution {
             return Objects.hash(source, destination);
         }
 
+        @Override
+        public String toString() {
+            return "(" + source + "->" + destination + ")";
+        }
 
         public boolean isDirectional() {
             return isDirectional;
@@ -133,7 +335,7 @@ public class Solution {
 
     }
 
-    public class UndirectedEdge<IdType extends Comparable<IdType>> extends Edge<IdType> {
+    public static class UndirectedEdge<IdType extends Comparable<IdType>> extends Edge<IdType> {
 
         //
         // Just diff names for source and destinations based on their natural sorting order
@@ -152,15 +354,13 @@ public class Solution {
             super(source, destination, false, forwardWeight, backwardWeight);
 
             // Self edges are not allowed
-            Preconditions.checkArgument(!(source.equals(destination)), "Source and vertex cannot be same");
-
             VertexIdComparator<IdType> vertexIdComparator = new VertexIdComparator<IdType>();
 
             if (vertexIdComparator.compare(source, destination) == 0) {
                 throw new IllegalArgumentException("Source and destination cannot be same");
             }
 
-            if (vertexIdComparator.compare(this.source, this.destination) < 0) {
+            if ( vertexIdComparator.compare(this.source, this.destination) < 0) {
                 lowerVertex = source;
                 upperVertex = destination;
             } else {
@@ -181,13 +381,13 @@ public class Solution {
         }
 
         @Override
-        public boolean equals(Object obj) {
+        public boolean equals (Object obj) {
 
             if (obj == null) {
                 return false;
             }
 
-            if (!(obj instanceof UndirectedEdge)) {
+            if ( ! (obj instanceof UndirectedEdge)) {
                 return false;
             }
 
@@ -197,7 +397,7 @@ public class Solution {
                 return true;
             }
 
-            return ((this.lowerVertex.equals(other.lowerVertex)) && (this.upperVertex.equals(other.upperVertex)));
+            return ( (this.lowerVertex.equals(other.lowerVertex)) && (this.upperVertex.equals(other.upperVertex)));
         }
 
         @Override
@@ -205,171 +405,14 @@ public class Solution {
             return Objects.hash(lowerVertex, upperVertex);
         }
 
-    }
-
-
-    public class Vertex<IdType extends Comparable<IdType>> {
-
-        private final IdType id;
-
-        /**
-         * Edges.
-         * NOTE : Data integrity is maintained by the graph object.
-         */
-        private final Map<Vertex<IdType>, Set<Edge<IdType>>> sources;
-        private final Map<Vertex<IdType>, Set<Edge<IdType>>> destinations;
-
-        private boolean isVisited = false;
-
-        public Vertex(IdType id) {
-
-            if ((id == null) || (id.toString().isEmpty())) {
-                throw new IllegalArgumentException("Vertex id cannot be null");
-            }
-
-            this.id = id;
-            this.sources = new HashMap<Vertex<IdType>, Set<Edge<IdType>>>();
-            this.destinations = new HashMap<Vertex<IdType>, Set<Edge<IdType>>>();
-
-            this.isVisited = false;
-        }
-
-        public void addDestination(Vertex<IdType> destination, Edge<IdType> edge) {
-
-            Preconditions.checkNotNull(destination, "null param destination");
-            Preconditions.checkNotNull(edge, "null param edge");
-
-            Preconditions.checkArgument(edge.getSource().equals(this));
-            Preconditions.checkArgument(edge.getDestination().equals(destination));
-
-            Set<Edge<IdType>> setEdges = destinations.get(destination);
-            if (setEdges == null) {
-                setEdges = new HashSet<Edge<IdType>>();
-                destinations.put(destination, setEdges);
-            }
-
-            Preconditions.checkArgument(!setEdges.contains(edge), "Cannot add duplicate edge");
-            setEdges.add(edge);
-
-        }
-
-        public void addSource(Vertex<IdType> source, Edge<IdType> edge) {
-
-            Preconditions.checkNotNull(source, "null param destination");
-            Preconditions.checkNotNull(edge, "null param edge");
-
-            Preconditions.checkArgument(edge.getDestination().equals(this));
-            Preconditions.checkArgument(edge.getSource().equals(source));
-
-            Set<Edge<IdType>> setEdges = sources.get(source);
-            if (setEdges == null) {
-                setEdges = new HashSet<Edge<IdType>>();
-                sources.put(source, setEdges);
-            }
-
-            Preconditions.checkArgument(!setEdges.contains(edge), "Cannot add duplicate edge");
-            setEdges.add(edge);
-
-        }
-
-        public boolean isSourceOf(Vertex<IdType> other) {
-            return (destinations.containsKey(other));
-        }
-
-        public boolean isDestinationOf(Vertex<IdType> other) {
-            return (sources.containsKey(other));
-        }
-
-        public boolean isConnectedTo(Vertex<IdType> other) {
-            return (isSourceOf(other) || isDestinationOf(other));
-        }
 
         @Override
-        public boolean equals(Object obj) {
-
-            if (this == obj) {
-                return true;
-            }
-
-            if (obj == null) {
-                return false;
-            }
-
-            if (!(obj instanceof Vertex)) {
-                return false;
-            }
-
-            Vertex<IdType> other = (Vertex<IdType>) obj;
-
-            return Objects.equals(this.getId(), other.getId());
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hashCode(id);
-        }
-
-        public IdType getId() {
-            return id;
-        }
-
-        public boolean isVisited() {
-            return isVisited;
-        }
-
-        public void setIsVisited(boolean isVisited) {
-            this.isVisited = isVisited;
-        }
-
-        public Set<Vertex<IdType>> getSourceVertices() {
-            return sources.keySet();
-        }
-
-        public Set<Vertex<IdType>> getDestinationVertices() {
-            return destinations.keySet();
-        }
-
-        public Set<Edge<IdType>> getSourceEdges() {
-            Set<Edge<IdType>> allEdges = new HashSet<Edge<IdType>>();
-            for (Set<Edge<IdType>> edgeSet : sources.values()) {
-                allEdges.addAll(edgeSet);
-            }
-            return allEdges;
-        }
-
-        public Set<Edge<IdType>> getDestinationEdges() {
-            Set<Edge<IdType>> allEdges = new HashSet<Edge<IdType>>();
-            for (Set<Edge<IdType>> edgeSet : destinations.values()) {
-                allEdges.addAll(edgeSet);
-            }
-            return allEdges;
-        }
-
-        /**
-         * TODO : Implement Comparable interface directly in Vertex.
-         * <p/>
-         * Helper
-         *
-         * @return
-         */
-        public String getIdStr() {
-            return id.toString();
-        }
-
-    }
-
-    /**
-     * Compares based on IDs
-     */
-    public class VertexIdComparator<IdType extends Comparable<IdType>> implements Comparator<Vertex<IdType>> {
-
-        public int compare(Vertex<IdType> o1, Vertex<IdType> o2) {
-            return o1.getId().compareTo(o2.getId());
+        public String toString() {
+            return "(" + source + "--" + destination + ")";
         }
     }
 
-
-    public class Graph<IdType extends Comparable<IdType>> {
+    public static class Graph<IdType extends Comparable<IdType>> {
 
         /**
          * These are redundant structures, useful in different usecases.
@@ -421,9 +464,153 @@ public class Solution {
             return edge;
         }
 
+
+        /**
+         * Not thread safe
+         * <p/>
+         * NOTE : keepGoing.test will be called AFTER visitCompletedConsumer.accept is called
+         *  @param startVertex
+         * @param visitCompletedConsumer
+         * @param keepGoing
+         */
+        public Map<Vertex<IdType>, List<Edge<IdType>>> performBreadthFirstTraversal(Vertex<IdType> startVertex,
+                                                                                    BiConsumer<Vertex<IdType>, List<Edge<IdType>>> visitCompletedConsumer,
+                                                                                    Consumer<Map<Vertex<IdType>, List<Edge<IdType>>>> traversalCompletedConsumer,
+                                                                                    Predicate<Vertex<IdType>> keepGoing) {
+
+            // start with a clean slate
+            resetTraversalInfo();
+
+            // destination vertices and their paths
+            Map<Vertex<IdType>, List<Edge<IdType>>> allPathsFromStartingVertex = new HashMap<>();
+
+            // vertices to traverse from, in desired order
+            // with paths to them from starting vertex
+            Queue<Vertex<IdType>> verticesToTraverse = new LinkedList<>();
+
+            // visit the start vertex
+            startVertex.setIsVisited(true);
+            startVertex.setHopCount(0);
+            startVertex.setCumulativeWight(0.0);
+            // should stop right now?
+            if ( ! keepGoing.test(startVertex)) {
+                traversalCompletedConsumer.accept(allPathsFromStartingVertex);
+                // end with a clean slate
+                resetTraversalInfo();
+                return allPathsFromStartingVertex;
+            }
+
+            // init the queue with start vertex
+            verticesToTraverse.add(startVertex);
+            // path to start vertex from start vertex is obviously empty
+            allPathsFromStartingVertex.put (startVertex, new ArrayList<Edge<IdType>>());
+
+            boolean doneTraversing = false;
+            while ( (!verticesToTraverse.isEmpty()) && ( !doneTraversing)) {
+
+                //System.out.println("Current queue is " + verticesToTraverse);
+
+                // get the first vertex out of the queue
+                Vertex currentVertex = verticesToTraverse.remove();
+                //System.out.println("Current vertex is " + currentVertex.getIdStr());
+
+                // path to the currentVertex, will be used for neighbors
+                List<Edge<IdType>> pathToCurrentVertex = allPathsFromStartingVertex.get(currentVertex);
+
+                // get destinationPairs, and if they are not visited yet, add them to the queue
+                List<SimpleImmutableEntry<Vertex<IdType>, Edge<IdType>>> destinationPairs = getSortedGraphSpecificDestinations(currentVertex);
+                for (SimpleImmutableEntry<Vertex<IdType>, Edge<IdType>> destinationPair : destinationPairs) {
+
+                    Vertex<IdType> destinationVertex = destinationPair.getKey();
+                    Edge<IdType> destinationEdge = destinationPair.getValue();
+                    //System.out.println("----- looking at destination " + destinationVertex.getIdStr() + " isVisited=" + destinationVertex.isVisited() + " from edge " + destinationEdge.toString());
+
+                    if (destinationVertex.isVisited()) {
+                        continue;
+                    }
+
+                    // visit the vertex
+                    destinationVertex.setIsVisited(true);
+                    destinationVertex.setHopCount(currentVertex.getHopCount() + 1);
+                    destinationVertex.addToCumulativeWeight(destinationEdge.getForwardWeight());
+
+                    // update the path to the visited vertex
+                    List<Edge<IdType>> pathToDestinationVertex = new ArrayList<>();
+                    pathToDestinationVertex.addAll(pathToCurrentVertex); // path from starting vertex
+                    pathToDestinationVertex.add(destinationEdge); // append with the edge used to traverse
+                    // add the path to all paths
+                    allPathsFromStartingVertex.put (destinationVertex, pathToDestinationVertex);
+
+                    // note the completion of visit
+                    visitCompletedConsumer.accept(destinationVertex, pathToDestinationVertex);
+
+                    // should the traversal stop at this vertex
+                    if ( ! keepGoing.test(destinationVertex)) {
+                        doneTraversing = true;
+                        break;
+                    }
+
+                    verticesToTraverse.add(destinationVertex);
+                }
+            }
+
+            traversalCompletedConsumer.accept(allPathsFromStartingVertex);
+
+            // end with a clean slate
+            resetTraversalInfo();
+
+            return allPathsFromStartingVertex;
+        }
+
+
         /**
          * Allow derived classes to override this method
-         * While this graph creates only a directional edge.
+         *
+         * This graph only looks at the proper destinations.
+         * A bidirectional graph will need to look at both source and destination edges.
+         *
+         * It will just take the first edge for the vertex, and use that to return a pair.
+         * Such an approach works fine for simple graph.
+         *
+         * This graph does not return the vertices in any particular order.
+         * Which may be needed for some implementation.
+         *
+         * @param vertex
+         * @return
+         */
+        protected List<SimpleImmutableEntry<Vertex<IdType>, Edge<IdType>>> getSortedGraphSpecificDestinations(Vertex<IdType> vertex) {
+
+            List<SimpleImmutableEntry<Vertex<IdType>, Edge<IdType>>> neighborsList = new ArrayList<SimpleImmutableEntry<Vertex<IdType>, Edge<IdType>>>();
+
+            Map<Vertex<IdType>, Set<Edge<IdType>>> neighborsMap = getGraphSpecificDestinations(vertex);
+
+            for ( Vertex<IdType> neighbor : neighborsMap.keySet()) {
+                // pick the first edge
+                Edge<IdType> edge = neighborsMap.get(neighbor).iterator().next();
+                neighborsList.add ( new SimpleImmutableEntry<>(neighbor, edge));
+            }
+
+            return neighborsList;
+        }
+
+
+        /**
+         * Allow derived classes to override this method
+         *
+         * Return only proper destinations.
+         *
+         * @param vertex
+         * @return
+         */
+        protected Map<Vertex<IdType>, Set<Edge<IdType>>> getGraphSpecificDestinations (Vertex<IdType> vertex) {
+            return vertex.getDestinations();
+        }
+
+
+        /**
+         * Allow derived classes to override this method
+         *
+         * This graph creates only a directional edge.
          *
          * @param source
          * @param destination
@@ -437,30 +624,155 @@ public class Solution {
             return mapIdVertex.get(id);
         }
 
+        public void resetTraversalInfo() {
+            clearAllHopCounts();
+            clearAllCumulativeWeights();
+            clearAllVisitedEdgesAndVertices();
+        }
+
         public void clearAllVisitedEdgesAndVertices() {
             clearAllVisitedEdges();
             clearAllVisitedVertices();
         }
 
         public void clearAllVisitedEdges() {
-
             edges.forEach(e -> e.setIsVisited(false));
         }
 
         public void clearAllVisitedVertices() {
-
             vertices.forEach(v -> v.setIsVisited(false));
         }
 
+        public void clearAllHopCounts() {
+            vertices.forEach(v -> v.setHopCount(0));
+        }
+
+        public void clearAllCumulativeWeights() {
+            vertices.forEach(v -> v.setCumulativeWight(0.0));
+        }
+
         public SortedSet<Vertex<IdType>> getVertices() {
-            return ImmutableSortedSet.copyOf(vertexComparator, vertices);
+            return vertices;
         }
 
         public Set<Edge<IdType>> getEdges() {
-            return ImmutableSet.copyOf(edges);
+            return (edges);
         }
     }
 
+    public static class UndirectedGraph<IdType extends Comparable<IdType>> extends Graph<IdType> {
+
+        public UndirectedGraph() {
+            super();
+        }
+
+        @Override
+        protected Edge<IdType> createGraphSpecificEdge(Vertex<IdType> source, Vertex<IdType> destination) {
+            return new UndirectedEdge<IdType>(source, destination);
+        }
+
+
+        /**
+         *
+         * @param vertex
+         * @return
+         */
+        protected Map<Vertex<IdType>, Set<Edge<IdType>>> getGraphSpecificDestinations (Vertex<IdType> vertex) {
+
+            // combine source and destinations
+            // it's safe to do a putAll, as only one edge between source and vertex will exist
+            // there is no danger of overwriting
+            // The UndirectedEdge equals/compare etc ensure that the graph treats edges from A-B and B-A are treated as same
+            // A multi-graph with undirected edges can have multiple edges between two vertices, and will have to
+            // implement this function
+            Map<Vertex<IdType>, Set<Edge<IdType>>> neighborsMap = new HashMap<>(vertex.getDestinations());
+            neighborsMap.putAll(vertex.getSources());
+
+            //System.out.println("For vertex " + vertex + " undirected edges are " + neighborsMap);
+            return neighborsMap;
+        }
+
+    }
+
+
+    /**
+     * NOTE :
+     *
+     * 1.
+     * There can be more vertices than the edges specify,as some vertices may not be reachable.
+     * So vertices have to be added explicitly. This is important.
+     *
+     * 2.
+     * Vertices start with 1. Small detail, but matters.
+     *
+     * 3.
+     * This one is really bad.
+     * The input can have duplicate edges.
+     * My implementation throws exception while adding such edges.
+     * Hence these exceptions have to be caught and ignored.
+     *
+     * @param scanner
+     */
+    public static void solveTestCaseBFS_1 (Scanner scanner) {
+
+        UndirectedGraph<Integer> graph = new UndirectedGraph<>();
+
+        int numVertices = scanner.nextInt();
+
+        for (int i = 1 ; i<= numVertices; i++) {
+            graph.addVertexIfNeeded(new Integer(i));
+        }
+
+        int numEdges = scanner.nextInt();
+
+        for ( int i = 0; i < numEdges; i++) {
+            int source = scanner.nextInt();
+            int destination = scanner.nextInt();
+            try {
+                graph.addVerticesAndEdge(new Integer(source), new Integer(destination));
+            } catch (IllegalArgumentException ignore) {
+            }
+        }
+
+        int start = scanner.nextInt();
+
+        Predicate<Vertex<Integer>> keepGoing = (Vertex<Integer> v) -> {
+            return true;
+        };
+
+        BiConsumer<Vertex<Integer>, List<Edge<Integer>>> visitCompletedConsumer =
+                (Vertex<Integer> v,List<Edge<Integer>> path) -> {
+                    return;
+                };
+
+        Consumer<Map<Vertex<Integer>, List<Edge<Integer>>>> traversalCompletedConsumer =
+                (Map<Vertex<Integer>, List<Edge<Integer>>> pathsToVertices) -> {
+                    return;
+                };
+
+        Map<Vertex<Integer>, List<Edge<Integer>>> paths
+                = graph.performBreadthFirstTraversal(
+                    graph.getVertex(new Integer(start)),
+                            visitCompletedConsumer,
+                            traversalCompletedConsumer,
+                            keepGoing);
+
+        SortedSet<Vertex<Integer>> vertices = graph.getVertices();
+
+        for ( Vertex<Integer> vertex : vertices) {
+            List<Edge<Integer>> path = paths.get(vertex);
+            if ( vertex.equals(graph.getVertex(start))) {
+                continue;
+            }
+            else if ( (path == null) || (path.size() == 0)) {
+                System.out.print ("-1 ");
+            }
+            else {
+                System.out.print( (6 * path.size()) + " ");
+            }
+        }
+        System.out.println();
+    }
 
     public static void main(String args[]) {
 
@@ -470,11 +782,7 @@ public class Solution {
 
         for (int t = 0; t < numTestCases; t++) {
 
-            int num = scanner.nextInt();
-
-            long result = 0;
-
-            System.out.println(result);
+            solveTestCaseBFS_1(scanner);
         }
 
     }
