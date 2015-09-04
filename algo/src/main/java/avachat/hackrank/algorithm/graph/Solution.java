@@ -1,4 +1,4 @@
-package avachat.hackrank.graph;
+package avachat.hackrank.algorithm.graph;
 
 import avachat.common.graph.Edge;
 import avachat.common.graph.UndirectedGraph;
