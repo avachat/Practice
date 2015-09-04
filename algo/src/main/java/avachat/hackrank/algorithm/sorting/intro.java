@@ -14,7 +14,7 @@ import java.util.Scanner;
  *
  * Created by avachat on 9/3/15.
  */
-public class intro {
+public class Intro {
 
     public static void main (String[] args) {
 
