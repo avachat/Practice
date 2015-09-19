@@ -4,6 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import static avachat.hackrank.algorithm.sorting.QuickSortInPlace.partition;
+import static avachat.hackrank.algorithm.sorting.QuickSortInPlace.recursiveQuickSort;
 
 /**
  * Created by avachat on 9/17/15.
@@ -165,6 +166,49 @@ public class QuickSortInPlaceTest {
 
     @Test
     public void testRecursiveQuickSort() throws Exception {
+
+        int[] ar = null;
+
+        // random
+        ar = new int[] {4, 6, 2, 3, 8, 7, 1, 9, 0, 5};
+        recursiveQuickSort(ar, 0, 9);
+        Assert.assertEquals(new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, ar);
+
+        // single element
+        ar = new int[] {4};
+        recursiveQuickSort(ar, 0, 0);
+        Assert.assertEquals(new int[] {4}, ar);
+
+        // 2 elements, sorted
+        ar = new int[] {4, 7};
+        recursiveQuickSort(ar, 0, 1);
+        Assert.assertEquals(new int[] {4, 7}, ar);
+
+        // 2 elements, reverse sorted
+        ar = new int[] {4, 2};
+        recursiveQuickSort(ar, 0, 1);
+        Assert.assertEquals(new int[] {2, 4}, ar);
+
+        // 3 elements, sorted
+        ar = new int[] {4, 5, 7};
+        recursiveQuickSort(ar, 0, 2);
+        Assert.assertEquals(new int[] {4, 5, 7}, ar);
+
+        // 3 elements, reverse sorted
+        ar = new int[] {9, 4, 2};
+        recursiveQuickSort(ar, 0, 2);
+        //System.out.println(Arrays.toString(ar));
+        Assert.assertEquals(new int[] {2, 4, 9}, ar);
+
+        // sorted
+        ar = new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        recursiveQuickSort(ar, 0, 9);
+        Assert.assertEquals(new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, ar);
+
+        // reverse sorted
+        ar = new int[] {9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
+        recursiveQuickSort(ar, 0, 9);
+        Assert.assertEquals(new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, ar);
 
     }
 }

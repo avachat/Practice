@@ -69,8 +69,23 @@ public class QuickSortInPlace {
 
     }
 
-    public static void recursiveQuickSort() {
+    public static void recursiveQuickSort(int[] ar, int left, int right) {
 
+        if ( left > right ) {
+            throw new IllegalArgumentException("left " + left + " < right = " + right);
+        }
+
+        if ( left == right ) {
+            return;
+        }
+
+        // partition
+        int pivotAt = partition(ar, left, right);
+
+        // sort left side
+        if ( pivotAt > left) recursiveQuickSort(ar, left, pivotAt-1);
+        // sort right side
+        if ( pivotAt < right) recursiveQuickSort(ar, pivotAt+1, right);
     }
 
     public static void main(String[] args) {
