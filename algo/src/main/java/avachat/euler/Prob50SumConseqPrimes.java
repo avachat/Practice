@@ -29,8 +29,8 @@ static {
     PowerOf2 = new long [NumberOfDigits] ;
     for (int i = 0, pow2 = 1 ; i < NumberOfDigits ; i++) {
     	PowerOf2 [i] = pow2*2 ;
-    } // 
-} // 
+    } //
+} //
 
 
 /**
@@ -45,11 +45,11 @@ public static boolean isDivisible (long num, List<Long> all_primes)
 	//System.out.println ("\t\t... dividing by " + prime) ;
      	if ( (num % prime) == 0 ) {
 	    return true ;
-	} // 
-     } // 
+	} //
+     } //
 
      return false ;
-} // 
+} //
 
 
 /**
@@ -60,19 +60,19 @@ public static long getNextPrime (List<Long> all_primes) {
     if (all_primes.size() == 0 ) {
     	all_primes.add (2L) ;
 	return 2L ;
-    } // 
+    } //
 
     // get the last known prime and increment it
     long candidate = all_primes.get (all_primes.size() - 1) + 1 ;
 
     while ( isDivisible (candidate, all_primes) ) {
     	candidate ++ ;
-    } // 
+    } //
 
     //System.out.println ("\tnext prime = " + candidate) ;
     all_primes.add (candidate) ;
     return candidate ;
-} // 
+} //
 
 
 
@@ -84,7 +84,7 @@ public static void GenPrimesTillN (int N)
 {
 
     //System.out.println ("Finding primes till " + N) ;
-    
+
     // consider all numbers as prime to begin with
     // init array of N flags to false, if explicit init needed for your language
     boolean is_non_prime[] = new boolean [N+1] ; // first index is 0
@@ -105,16 +105,16 @@ public static void GenPrimesTillN (int N)
 	for ( int composite = candidate * candidate ; composite <= N ; composite += candidate ) {
 	    K++ ;
 	    is_non_prime [composite] = true ;
-	} // 
-    } // 
+	} //
+    } //
 
     int num_primes = 0 ;
     // count number of primes and allocate space
     for (int i = 2 ; i <= N ; i++) {
     	if ( ! is_non_prime[i] ) {
 	    ++ num_primes ;
-	} // 
-    } // 
+	} //
+    } //
 
     System.out.println ("Allocating " + num_primes + " primes");
     AllPrimes = new TreeSet<Long> () ;
@@ -129,16 +129,16 @@ public static void GenPrimesTillN (int N)
 		if ( multiplier == 10) {
 		    milepost *= 10;
 		    multiplier = 1;
-		} // 
+		} //
 	    }
-	} // 
-    } // 
+	} //
+    } //
 
     System.out.println ("Iterations = " + K) ;
     System.out.println ("Num of primes = " + num_primes) ;
 
 
-} // 
+} //
 
 
 
@@ -166,15 +166,15 @@ public static void FindPrimesWithSumOfConsequtivePrimes (TreeSet<Long> all_prime
 		found_prime_sum = true ;
 		if ( ! SumOfPrimes.containsKey(sum) ) {
 		    SumOfPrimes.put (sum, new ArrayList<List<Long>>()) ;
-		} // 
+		} //
 		List<List<Long>> members_list = SumOfPrimes.get(sum) ;
 		members_list.add (new ArrayList<Long> (members)) ;
 		//System.out.println (sum + " = " + members_list) ;
-	    } // 
-	} // 
-    } // 
+	    } //
+	} //
+    } //
 
-} // 
+} //
 
 
 
@@ -188,11 +188,11 @@ private static String ToString (List<List<Long>> members_list) {
 	buf.append (")") ;
 	buf.append (members) ;
 	buf.append (" ") ;
-    } // 
+    } //
 
     return buf.toString() ;
 
-} // 
+} //
 
 
 public static void PrintLongestSequence(Map<Long,List<List<Long>>> result) {
@@ -211,15 +211,15 @@ public static void PrintLongestSequence(Map<Long,List<List<Long>>> result) {
 	    if (members.size() > sequence.size()) {
 	    	prime = sum ;
 		sequence = members ;
-	    } // 
-	} // 
+	    } //
+	} //
 
 	if ( members_list.size() >= max_prime_ways ) {
 	    max_prime_ways = members_list.size();
 	    prime_with_max_prime_ways = sum;
 	    prime_ways = members_list;
-	} // 
-    } // 
+	} //
+    } //
 
 
     System.out.println ("\nLongest sequence is for " + prime + " = " + "(" + sequence.size() + ")" + sequence) ;
@@ -227,7 +227,7 @@ public static void PrintLongestSequence(Map<Long,List<List<Long>>> result) {
 
     System.out.println ("\nMost prime ways are for " + prime_with_max_prime_ways + ":" + prime_ways.size() + " = " + ToString(prime_ways)) ;
 
-} // 
+} //
 
 
 /**
@@ -252,18 +252,18 @@ public static void PrintPrimeLengthSequences() {
 		if (member.size() >= sequence.size()) {
 		    prime = sum ;
 		    sequence = member ;
-		} // 
-	    } // 
-	} // 
+		} //
+	    } //
+	} //
 
 	if ( members_list.size() >= max_prime_ways ) {
 	    max_prime_ways = members_list.size();
 	    prime_with_max_prime_ways = sum;
 	    prime_ways = members_list;
-	} // 
+	} //
 
 	sum1 = sum;
-    } // 
+    } //
 
     System.out.println ("\nAAA: Longest sequence of prime length is for " + prime + " = " + "(" + sequence.size() + ")" + sequence) ;
 
@@ -292,7 +292,7 @@ public static void PrintWithOnlyPrimeLengthSequences() {
 	List<List<Long>> members_list = SumOfPrimes.get (sum) ;
 	if ( members_list.size() <= 1 ) {
 	    continue;
-	} // 
+	} //
 	boolean all_prime_lengths = true;
 	for (List<Long> member : members_list) {
 	    if (! AllPrimes.contains(new Long(member.size()))) {
@@ -308,18 +308,18 @@ public static void PrintWithOnlyPrimeLengthSequences() {
 		if (member.size() >= sequence.size()) {
 		    prime = sum ;
 		    sequence = member ;
-		} // 
-	    } // 
-	} // 
+		} //
+	    } //
+	} //
 
 	if ( members_list.size() >= max_prime_ways ) {
 	    max_prime_ways = members_list.size();
 	    prime_with_max_prime_ways = sum;
 	    prime_ways = members_list;
-	} // 
+	} //
 
 	sum1 = sum;
-    } // 
+    } //
 
     System.out.println ("\nBBB: Longest sequence of prime length is for " + prime + " = " + "(" + sequence.size() + ")" + sequence) ;
 
@@ -349,26 +349,26 @@ public static void PrintPrimeNumberOfSequences() {
 	List<List<Long>> members_list = SumOfPrimes.get (sum) ;
 	if ( members_list.size() <= 1 ) {
 	    continue;
-	} // 
+	} //
 	if ( ! AllPrimes.contains (new Long(members_list.size()))) {
 	    continue;
-	} // 
+	} //
 	System.out.println (members_list.size() + " :: " + sum + " = " + ToString (members_list)) ;
 	for (List<Long> members : members_list) {
 	    if (members.size() >= longest_equence.size()) {
 	    	prime = sum ;
 		longest_equence = members ;
-	    } // 
-	} // 
+	    } //
+	} //
 
 	if ( members_list.size() >= max_prime_ways ) {
 	    max_prime_ways = members_list.size();
 	    prime_with_max_prime_ways = sum;
 	    prime_ways = members_list;
-	} // 
+	} //
 
 	sum1 = sum;
-    } // 
+    } //
 
 
     System.out.println ("\nCCC: Longest sequence is for " + prime + " = " + "(" + longest_equence.size() + ")" + longest_equence) ;
@@ -398,41 +398,41 @@ public static void PrintPrimeOfPrimes() {
 	List<List<Long>> members_list = SumOfPrimes.get (sum) ;
 	if ( members_list.size() <= 1 ) {
 	    continue;
-	} // 
+	} //
 	if ( ! AllPrimes.contains (new Long(members_list.size()))) {
 	    continue;
-	} // 
+	} //
 
 	boolean found = true;
 	for (List<Long> member : members_list) {
 	    if ( ! AllPrimes.contains (new Long(member.size()))) {
 		found = false;
 		break;
-	    } // 
-	} // 
+	    } //
+	} //
 
 	if (!found) {
 	    continue;
-	} // 
+	} //
 
 	for (List<Long> member : members_list) {
 	    if (member.size() >= longest_equence.size()) {
 	    	prime = sum ;
 		longest_equence = member ;
-	    } // 
+	    } //
 
 	    if ( members_list.size() >= max_prime_ways ) {
 		max_prime_ways = members_list.size();
 		prime_with_max_prime_ways = sum;
 		prime_ways = members_list;
-	    } // 
+	    } //
 
 	}
 
 	System.out.println (members_list.size() + " :: " + sum + " = " + ToString (members_list)) ;
 
 	sum1 = sum;
-    } // 
+    } //
 
 
     System.out.println ("\nDDD: Longest sequence is for " + prime + " = " + "(" + longest_equence.size() + ")" + longest_equence) ;
@@ -450,21 +450,21 @@ public static void SelectPrimeOfPrimes () {
 	List<List<Long>> members_list = SumOfPrimes.get (sum) ;
 	if ( ! AllPrimes.contains (new Long(members_list.size()))) {
 	    continue;
-	} // 
+	} //
 
 	boolean found = true;
 	for (List<Long> member : members_list) {
 	    if ( ! AllPrimes.contains (new Long(member.size()))) {
 		found = false;
 		break;
-	    } // 
-	} // 
+	    } //
+	} //
 
 	if ( found ) {
 	    PrimeOfPrimes.put (sum, members_list);
 	}
 
-    } // 
+    } //
 
 }
 
@@ -476,14 +476,14 @@ public static void main (String argv[]) throws Exception
     if (argv.length != 1) {
     	System.out.println ("Usage :: java Euler.Prob <num>") ;
 	System.exit (1) ;
-    } // 
+    } //
 
     InputNumber = Long.parseLong (argv[0]) ;
 
     if ( InputNumber <= 1 ) {
     	System.out.println ("1 Prime Number = " + 1) ;
 	return ;
-    } // 
+    } //
 
     System.out.println ("Input number = " + InputNumber);
 
@@ -497,7 +497,7 @@ public static void main (String argv[]) throws Exception
     /*
     for (long i = 2 ; last_prime <= InputNumber ; i++ ) {
     	last_prime = getNextPrime (AllPrimes) ;
-    } // 
+    } //
     */
 
     GenPrimesTillN ((int)InputNumber) ;
@@ -518,19 +518,19 @@ public static void main (String argv[]) throws Exception
 
     PrintLongestSequence (SumOfPrimes) ;
 
-    System.out.println ("\n\nAAA:\nPrinting squences with prime length") ;
-    PrintPrimeLengthSequences();
+    //System.out.println ("\n\nAAA:\nPrinting squences with prime length") ;
+    //PrintPrimeLengthSequences();
 
-    System.out.println ("\n\nBBB:\nPrinting squences with only prime length") ;
-    PrintWithOnlyPrimeLengthSequences();
+    //System.out.println ("\n\nBBB:\nPrinting squences with only prime length") ;
+    //PrintWithOnlyPrimeLengthSequences();
 
-    System.out.println ("\n\nCCC:\nPrinting squences with prime ways") ;
-    PrintPrimeNumberOfSequences() ;
+    //System.out.println ("\n\nCCC:\nPrinting squences with prime ways") ;
+    //PrintPrimeNumberOfSequences() ;
 
 
 
-    System.out.println ("\n\nDDD:\nPrinting prime of primes") ;
-    PrintPrimeOfPrimes();
+    //System.out.println ("\n\nDDD:\nPrinting prime of primes") ;
+    //PrintPrimeOfPrimes();
     //SelectPrimeOfPrimes();
     //PrintLongestSequence (PrimeOfPrimes) ;
 
