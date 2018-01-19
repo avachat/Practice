@@ -1,5 +1,8 @@
 package avachat.common.math;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Helper to generate primes.
  *
@@ -8,62 +11,112 @@ package avachat.common.math;
 
 public class PrimeGenerator {
 
-    /**
-     *  Generates primes using the sieve method.
-     *
-     * @param N The highest composite number that should be used to generate primes, N >= 1
-     * @param primes Array big enough to hold the primes.
-     * @return number of primes that were put in the array
-     */
-    public static int generate (int N, int[] primes) {
+  /**
+   * Generates primes using the sieve method.
+   *
+   * @param N The highest composite number that should be used to generate primes, N >= 1
+   * @param primes Array big enough to hold the primes.
+   * @return number of primes that were put in the array
+   */
+  public static int generate(int N, int[] primes) {
 
-        // consider all numbers as prime to begin with
-        // init array of N flags to false, if explicit init needed for your language
-        boolean[] is_non_prime = new boolean[N + 1]; // first index is 0
+    // consider all numbers as prime to begin with
+    // init array of N flags to false, if explicit init needed for your language
+    boolean[] is_non_prime = new boolean[N + 1]; // first index is 0
 
-        is_non_prime [0] = is_non_prime [1] = true ; // 0 and 1 are not considered primes
+    is_non_prime[0] = is_non_prime[1] = true; // 0 and 1 are not considered primes
 
-        @SuppressWarnings("unused")
-        int K = 0 ; // iterations
+    @SuppressWarnings("unused")
+    int K = 0; // iterations
 
-        for (int candidate = 2 ; candidate*candidate <= N ; candidate ++) {
-            // there is no need to find composites of a non-prime number
-            // as they would have been already marked by now by their prime factor
-            if ( is_non_prime[candidate] )
-                continue ;
+    for (int candidate = 2; candidate * candidate <= N; candidate++) {
+      // there is no need to find composites of a non-prime number
+      // as they would have been already marked by now by their prime factor
+      if (is_non_prime[candidate]) {
+        continue;
+      }
 
-            for ( int composite = candidate * candidate ; composite <= N ; composite += candidate ) {
-                K++ ;
-                is_non_prime [composite] = true ;
-            } //
-        } //
+      for (int composite = candidate * candidate; composite <= N; composite += candidate) {
+        K++;
+        is_non_prime[composite] = true;
+      } //
+    } //
 
-        int num_primes = 0 ;
-        for (int i = 2 ; i <= N ; i++) {
-            if ( ! is_non_prime[i] ) {
-                primes [num_primes] = i;
-                ++ num_primes ;
-            } //
-        } //
+    int num_primes = 0;
+    for (int i = 2; i <= N; i++) {
+      if (!is_non_prime[i]) {
+        primes[num_primes] = i;
+        ++num_primes;
+      } //
+    } //
 
-        //System.out.println ("Iterations = " + K) ;
-        return num_primes;
+    //System.out.println ("Iterations = " + K) ;
+    return num_primes;
+  }
+
+
+  /**
+   * @param N largest number to find factors for
+   * @return list of factors for every integer from 2 up to N, will null list for 0 and 1
+   */
+  public static List<List<Integer>> generatePrimeFactors(int N) {
+
+    // TODO : Needs tests
+
+    List<List<Integer>> allPrimeFactors = new ArrayList<>(N + 1); // first index is 0
+
+    // consider all numbers as prime to begin with
+    boolean[] is_non_prime = new boolean[N + 1]; // first index is 0
+
+    is_non_prime[0] = is_non_prime[1] = true; // 0 and 1 are not considered primes
+
+    // Start the sieve from 2 onwards
+    //
+    for (int candidate = 2; candidate * candidate <= N; candidate++) {
+      //
+      // there is no need to find composites of a non-prime number
+      // as they would have been already marked by now by their prime factor
+      //
+      // To check for "prime-ness" just check if the number has any factors
+      //
+      if (!allPrimeFactors.get(candidate).isEmpty()) {
+        // factors exist, so candidate is not a prime
+        continue;
+      }
+
+      // NOTE : Now we know that candidate is a prime
+
+      // The optimization for pure sieve can initialize composite = candidate*candidate
+      // But here we want to find all candidate factors of all numbers.
+      // We must mark what composites have the candidate as a factor.
+      // So we must start from candidate*2
+      // NOTE : We are NOT putting the number as it's own factor, even for primes
+      // Only prime numbers k such that 1 < k < N are added to the factors list
+      //
+      for (int composite = 2 * candidate; composite <= N; composite += candidate) {
+        // candidate is a factor of the composite
+        allPrimeFactors.get(composite).add(candidate);
+      } //
     }
 
-    public static void main (@SuppressWarnings("unused") String[] args) {
+    return allPrimeFactors;
+  }
 
-        int N = Integer.parseInt (args[0]) ;
-        int[] primes = new int[N];
 
-        int numPrimes = generate(N, primes);
+  public static void main(@SuppressWarnings("unused") String[] args) {
 
-        System.out.println (numPrimes);
-        for (int i = 0; i < numPrimes; i++) {
-            System.out.print(primes[i]);
-            if ( i != (numPrimes - 1)) {
-                System.out.print(",");
-            }
-        }
-        System.out.println();
+    int N = Integer.parseInt(args[0]);
+    int[] primes = new int[N];
+
+    int numPrimes = generate(N, primes);
+
+    System.out.println(numPrimes);
+    for (int i = 0; i < numPrimes; i++) {
+      System.out.print(primes[i]);
+      if (i != (numPrimes - 1)) {
+        System.out.print(",");
+      }
     }
+    System.out.println();
+  }
 }
