@@ -56,23 +56,43 @@ public class PrimeGenerator {
 
 
   /**
+   * Find prime factors of all numbers from 2 to N, both inclusive.
+   *
+   * The result is defined as follows.
+   *
+   * The factors will include all primes k that are a factor of N, such that 2 < k < N
+   *
+   * This means, 1, and the number N itself will NOT be in the list of factors, because they are trivial factors.
+   *
+   * This also means, for a prime number, the list of factors will be empty. That fact can be used to check primeness.
+   *
+   * To keep this definition consistent, for 0 and 1, the list of factors will be empty - as in undefined.
+   *
    * @param N largest number to find factors for
    * @return list of factors for every integer from 2 up to N, will null list for 0 and 1
    */
   public static List<List<Integer>> generatePrimeFactors(int N) {
 
+    if ( N <= 1 ) {
+      throw new IllegalArgumentException("N must be greater than 1");
+    }
+
     // TODO : Needs tests
 
     List<List<Integer>> allPrimeFactors = new ArrayList<>(N + 1); // first index is 0
 
-    // consider all numbers as prime to begin with
-    boolean[] is_non_prime = new boolean[N + 1]; // first index is 0
-
-    is_non_prime[0] = is_non_prime[1] = true; // 0 and 1 are not considered primes
+    // Initialize the list
+    allPrimeFactors.add(null); // ignore 0
+    allPrimeFactors.add(null); // ignore 1
+    // initialize from 2 onwards
+    for (int i = 2; i <= N; i++){
+      allPrimeFactors.add(new ArrayList<>());
+    }
 
     // Start the sieve from 2 onwards
     //
     for (int candidate = 2; candidate * candidate <= N; candidate++) {
+
       //
       // there is no need to find composites of a non-prime number
       // as they would have been already marked by now by their prime factor
