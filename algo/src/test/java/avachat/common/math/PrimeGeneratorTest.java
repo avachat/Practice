@@ -1,7 +1,9 @@
 package avachat.common.math;
 
 import static avachat.common.math.PrimeGenerator.generatePrimeFactors;
+import static avachat.common.math.PrimeGenerator.generateRelativePrimes;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
@@ -13,6 +15,55 @@ import org.junit.Test;
  */
 public class PrimeGeneratorTest {
 
+    @Test (expected = Exception.class)
+    public void testRelativePrime_negative() {
+        generateRelativePrimes(-10, Collections.emptyList());
+    }
+
+    @Test (expected = Exception.class)
+    public void testRelativePrime_0() {
+        generateRelativePrimes(0, Collections.emptyList());
+    }
+
+    @Test (expected = Exception.class)
+    public void testRelativePrime_1() {
+        generateRelativePrimes(1, Collections.emptyList());
+    }
+
+    @Test
+    public void testRelativePrime_2() {
+        List<Integer> relativePrimes = generateRelativePrimes(2, Collections.emptyList());
+        Assert.assertNotNull(relativePrimes);
+        Assert.assertTrue(relativePrimes.isEmpty());
+    }
+
+    @Test
+    public void testRelativePrime_3() {
+         Assert.assertEquals(ImmutableList.of(2), generateRelativePrimes(3, Collections.emptyList()));
+    }
+
+    @Test
+    public void testRelativePrime_6() {
+        // find factors till 1000
+        List<List<Integer>> allPrimeFactors = PrimeGenerator.generatePrimeFactors(6);
+
+        Assert.assertEquals(ImmutableList.of(5), generateRelativePrimes(6, allPrimeFactors.get(6)));
+    }
+
+    @Test
+    public void testRelativePrimeWithFactorsForPrimeNumbers() {
+        Assert.assertEquals(ImmutableList.of(2, 3, 4, 5, 6), generateRelativePrimes(7, generatePrimeFactors(7).get(7)));
+    }
+
+    @Test
+    public void testRelativePrimeWithFactors() {
+        // find factors till 1000
+        List<List<Integer>> allPrimeFactors = PrimeGenerator.generatePrimeFactors(1000);
+
+        Assert.assertEquals(ImmutableList.of(3, 5, 7), generateRelativePrimes(8, allPrimeFactors.get(8)));
+        Assert.assertEquals(ImmutableList.of(3, 7, 9), generateRelativePrimes(10, allPrimeFactors.get(10)));
+        Assert.assertEquals(ImmutableList.of(2, 4, 7, 8, 11, 13, 14), generateRelativePrimes(15, allPrimeFactors.get(15)));
+    }
 
     @Test (expected = Exception.class)
     public void testFactor_negative() {
@@ -57,6 +108,14 @@ public class PrimeGeneratorTest {
         Assert.assertNull(allPrimeFactors.get(1));
         List<Integer> factors_4 = allPrimeFactors.get(4);
         Assert.assertEquals(factors_4, ImmutableList.of(2));
+    }
+
+    @Test
+    public void testFactor_6() {
+        List<List<Integer>> allPrimeFactors = PrimeGenerator.generatePrimeFactors(6);
+        Assert.assertEquals(7, allPrimeFactors.size());
+        List<Integer> factors_6 = allPrimeFactors.get(6);
+        Assert.assertEquals(factors_6, ImmutableList.of(2, 3));
     }
 
     @Test
@@ -123,6 +182,17 @@ public class PrimeGeneratorTest {
     public void testGenerate_5() throws Exception {
         int[] primes = new int[5];
         int numPrimes = PrimeGenerator.generate(5, primes);
+        Assert.assertTrue(numPrimes == 3);
+        Assert.assertTrue(primes[0] == 2);
+        Assert.assertTrue(primes[1] == 3);
+        Assert.assertTrue(primes[2] == 5);
+    }
+
+
+    @Test
+    public void testGenerate_6() throws Exception {
+        int[] primes = new int[5];
+        int numPrimes = PrimeGenerator.generate(6, primes);
         Assert.assertTrue(numPrimes == 3);
         Assert.assertTrue(primes[0] == 2);
         Assert.assertTrue(primes[1] == 3);

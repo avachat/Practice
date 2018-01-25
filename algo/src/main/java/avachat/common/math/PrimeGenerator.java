@@ -77,8 +77,6 @@ public class PrimeGenerator {
       throw new IllegalArgumentException("N must be greater than 1");
     }
 
-    // TODO : Needs tests
-
     List<List<Integer>> allPrimeFactors = new ArrayList<>(N + 1); // first index is 0
 
     // Initialize the list
@@ -91,7 +89,7 @@ public class PrimeGenerator {
 
     // Start the sieve from 2 onwards
     //
-    for (int candidate = 2; candidate * candidate <= N; candidate++) {
+    for (int candidate = 2; candidate <= N; candidate++) {
 
       //
       // there is no need to find composites of a non-prime number
@@ -120,6 +118,42 @@ public class PrimeGenerator {
     }
 
     return allPrimeFactors;
+  }
+
+
+  public static List<Integer> generateRelativePrimes (int N, List<Integer> primeFactorsOfN) {
+
+    if ( N <= 1) {
+      throw new IllegalArgumentException("N must be > 1");
+    }
+
+    List<Integer> relativePrimes = new ArrayList<>();
+
+    // Assume no number from 0 to N-1 shares common factor with N
+    // Default init of boolean is false
+    // Then perform a sieve operation to mark true for numbers with common factors
+    //
+    boolean[] hasCommonFactors = new boolean[N]; // first index is 0, last is N-1 : perfect
+
+    // For every factor of N, start marking numbers at 'factor' intervals from N down to 0
+    for (int factor : primeFactorsOfN) {
+      // start with the first number : subtract factor from N
+      // stop when relatedComposite becomes smaller than 2
+      // NOTE : This also leaves indices 0 and 1 to remain false
+      for (int relatedComposite = N - factor; relatedComposite > 1 ; relatedComposite -= factor) {
+        hasCommonFactors [relatedComposite] = true;
+      }
+    }
+
+    // now collect all the composite numbers that were marked true
+    // Ignore 0 and 1, start with 2, and stop at N-1
+    for (int i = 2; i < N ; i++) {
+      if (!hasCommonFactors[i]) {
+        relativePrimes.add(i);
+      }
+    }
+
+    return relativePrimes;
   }
 
 
