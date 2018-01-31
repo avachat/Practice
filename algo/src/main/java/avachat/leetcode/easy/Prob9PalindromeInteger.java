@@ -24,25 +24,52 @@ package avachat.leetcode.easy;
  */
 public class Prob9PalindromeInteger {
 
-  public boolean isPalindrome(int x) {
+  /*
+     MISTAKES
 
-    // handle edge condition
-    if ( x == 0) {
-      return true;
-    }
+     1. See the test case code. Many edge conditions were missed.
+
+     The loop cannot handle single digits as written.
+
+     Numbers ending in 0, were incorrectly marked as palindromes.
+
+     The speed is still TOO SLOW. Not much difference with the solution. Not sure why this is slower.
+
+   */
+
+  public boolean isPalindrome(int x) {
 
     if (x < 0) {
       return false; // this is what the problem definition wants
     }
 
+    // handle edge condition
+    if ( x < 10) { // x is not negative here, and all single digits are palindromes
+      return true;
+    }
+
+    // handle edge condition
+    if ( x % 10 == 0 ) {
+      return false; // anything that ends with 0 cannot be a palindrome
+    }
+
     int reverseX = 0;
 
-    while ( x > reverseX ) {
+    // keep removing digits till x is greater than reverseX
+    // and only till x becomes single digit
+    // single digit is an edge condition not handled by logic inside the loop
+    while ( (x >= 10) && (x > reverseX) ) {
 
       int digit = x % 10; // remove the last digit
 
       // new value for x
       x = x / 10;
+
+      // if removing rightmost digit makes x and reverseX equal, then it's a palindrome
+      // this will happen for x with odd number of digits
+      if ( x == reverseX ) {
+        return true;
+      }
 
       int temp = reverseX; // for overflow checks
 
@@ -54,9 +81,16 @@ public class Prob9PalindromeInteger {
         return false;
       }
 
+      // if adding the rightmost digit makes them equal, it's a palindrome
+      // would happen for x with even number of digits
+      if ( x == reverseX) {
+        return true;
+      }
+
     }
 
-    return x == reverseX;
+    // all palindromes are detected in the loop
+    return false;
   }
 
 
