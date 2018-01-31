@@ -35,16 +35,53 @@ public class Prob9PalindromeInteger {
       return false; // this is what the problem definition wants
     }
 
+    int reverseX = 0;
+
+    while ( x < reverseX ) {
+
+      int digit = x % 10; // remove the last digit
+
+      // new value for x
+      x = x / 10;
+
+      int temp = reverseX; // for overflow checks
+
+      // calculate new reverseX
+      reverseX = (reverseX * 10) + digit;
+
+      // did overflow occur?
+      if ( (reverseX / 10) != temp) {
+        return false;
+      }
+
+    }
+
+    return x == reverseX;
+  }
+
+
+
+  public boolean isPalindromeDoesNotWork(int x) {
+
+    // handle edge condition
+    if ( x == 0) {
+      return true;
+    }
+
+    if (x < 0) {
+      return false; // this is what the problem definition wants
+    }
+
     // The following is needed ONLY IF -ve numbers are to be considered palindromes
     /***********
-    // convert x to positive
-    // check for overflow first
-    if ( x == Integer.MIN_VALUE) {
-      return false;
-    }
-    if (x < 0) {
-      x = x * -1;
-    }
+     // convert x to positive
+     // check for overflow first
+     if ( x == Integer.MIN_VALUE) {
+     return false;
+     }
+     if (x < 0) {
+     x = x * -1;
+     }
      ***********/
 
     int reverseX = 0;
