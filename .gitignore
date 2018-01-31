@@ -215,7 +215,9 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 
-# Added bh Abhay
+# Added by Abhay
 *.iml
 .idea/*
 target/*
+*.class
+target
