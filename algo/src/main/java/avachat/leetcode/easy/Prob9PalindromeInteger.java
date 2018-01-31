@@ -37,7 +37,7 @@ public class Prob9PalindromeInteger {
 
     int reverseX = 0;
 
-    while ( x < reverseX ) {
+    while ( x > reverseX ) {
 
       int digit = x % 10; // remove the last digit
 

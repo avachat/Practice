@@ -11,7 +11,7 @@ import org.junit.Test;
 public class Prob9PalindromeIntegerTest {
 
   @Test
-  public void isPalindrome() throws Exception {
+  public void isPalindrome() {
 
     Prob9PalindromeInteger testObj = new Prob9PalindromeInteger();
 
