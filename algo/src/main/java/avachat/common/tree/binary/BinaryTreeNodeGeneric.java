@@ -1,12 +1,14 @@
 package avachat.common.tree.binary;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
  * Created by Abhay Avachat on 3/7/18.
  */
-public class BinaryTreeNodeGeneric<T> implements BinaryTreeNode {
+public class BinaryTreeNodeGeneric<T> implements BinaryTreeNode<T> {
 
   private T dataAtNode;
   private BinaryTreeNodeGeneric<T> leftNode;
@@ -42,17 +44,39 @@ public class BinaryTreeNodeGeneric<T> implements BinaryTreeNode {
   }
 
   @Override
-  public Object getDataAtNode() {
+  public T getDataAtNode() {
     return dataAtNode;
   }
 
   @Override
-  public Optional<BinaryTreeNode> getLeftNode() {
+  public Optional<BinaryTreeNode<T>> getLeftNode() {
     return Optional.ofNullable(leftNode);
   }
 
   @Override
-  public Optional<BinaryTreeNode> getRightNode() {
+  public Optional<BinaryTreeNode<T>> getRightNode() {
     return Optional.ofNullable(rightNode);
   }
+
+  @Override
+  public List<T> generatePreOrder() {
+    List<T> list = new ArrayList<>();
+    generatePreOrderRecursive(list, this);
+    return list;
+  }
+
+  private void generatePreOrderRecursive(List<T> list, BinaryTreeNodeGeneric<T> node) {
+
+    if ( null != node.leftNode) {
+      generatePreOrderRecursive(list, node.leftNode);
+    }
+
+    list.add(node.dataAtNode);
+
+    if ( null != node.rightNode) {
+      generatePreOrderRecursive(list, node.rightNode);
+    }
+
+  }
+
 }
