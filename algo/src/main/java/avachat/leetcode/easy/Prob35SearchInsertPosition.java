@@ -70,4 +70,34 @@ Output: 0
     }
 
 
+    private int searchInsertIterative(int [] nums, int target) {
+
+        /*
+        Got it right the first time
+         */
+
+        int start = 0;
+        int end = nums.length - 1;
+
+        while (true) {
+
+            if ( start == end) {
+                if (target > nums[start]) {
+                    return start+1;
+                } else {
+                    return start;
+                }
+            }
+
+            int middle = (start + end) / 2;
+            if ( target == nums[middle]) {
+                return middle;
+            } else if (target < nums[middle]) {
+                end = middle;
+            } else {
+                start = middle+1;
+            }
+        }
+    }
+
 }
