@@ -34,7 +34,7 @@ Explanation: There are three ways to climb to the top.
         GOOD : Very simple problem : Finished in 2 mins.
          */
 
-        
+
         if ( n == 0 ) {
             return 0;
         }
