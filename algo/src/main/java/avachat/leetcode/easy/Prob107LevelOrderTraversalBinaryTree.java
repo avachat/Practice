@@ -3,7 +3,7 @@ package avachat.leetcode.easy;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Prob108LevelOrderTraversalBinaryTree {
+public class Prob107LevelOrderTraversalBinaryTree {
 
 
     /*
