@@ -27,7 +27,9 @@ Only three moves are needed (remember each move increments two elements):
 
     public int minMoves(int[] nums) {
 
-        int[]
+        // TODO : Need to solve using math
+        return 0;
+
     }
 
 
