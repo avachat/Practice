@@ -53,7 +53,7 @@ Bonus points if you could solve it both recursively and iteratively.
 
 
 
-    public static class TreeNode {
+    private static class TreeNode {
         int val;
         TreeNode left;
         TreeNode right;

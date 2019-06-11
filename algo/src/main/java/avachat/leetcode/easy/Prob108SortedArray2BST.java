@@ -24,7 +24,7 @@ One possible answer is: [0,-3,9,-10,null,5], which represents the following heig
 
 
 
-    public static class TreeNode {
+    private static class TreeNode {
         int val;
         TreeNode left;
         TreeNode right;

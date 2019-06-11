@@ -26,7 +26,7 @@ return its bottom-up level order traversal as:
      */
 
 
-    public static class TreeNode {
+    private static class TreeNode {
         int val;
         TreeNode left;
         TreeNode right;

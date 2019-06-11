@@ -28,7 +28,7 @@ Google: 90% of our engineers use the software you wrote (Homebrew), but you canâ
      */
 
 
-    public class TreeNode {
+    private class TreeNode {
         int val;
         TreeNode left;
         TreeNode right;
