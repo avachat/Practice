@@ -21,7 +21,7 @@ public class Prob21Merge2SortedLists {
     /**
      * Definition for singly-linked list.
      * */
-    public class ListNode {
+    private class ListNode {
         int val;
         ListNode next;
 
