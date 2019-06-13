@@ -25,7 +25,7 @@ Multiplication of any three numbers in the input won't exceed the range of 32-bi
      */
 
     public int maximumProduct(int[] nums) {
-        
+
         /*
         GOOD : Quickly implemented, faster than 99.5%
 
