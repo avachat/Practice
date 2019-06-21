@@ -81,6 +81,9 @@ Note:
 
         GOOD : Got it quickly, and at the first run, and faster than 100%  !!! :-) :-)
 
+        BAD : Could be combined in loop :-( :-(
+            See leetcode answer at
+                https://leetcode.com/problems/projection-area-of-3d-shapes/solution/
 
          */
 
