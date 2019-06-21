@@ -15,8 +15,8 @@ public class Assessment2Test {
 
         assertEquals(Assessment2.solution("abcabcd"), 4);
         assertEquals(Assessment2.solution("ababcabcd"), 4);
-        assertEquals(Assessment2.solution("abcdabcdefgabxyz"), 7);
-        assertEquals(Assessment2.solution("abcdabcdefgabxyzcde"), 8);
+        assertEquals(Assessment2.solution("abcdabcdefgabxyz"), 10);
+        assertEquals(Assessment2.solution("abcdabcdefgabxyzcde"), 10);
 
         assertEquals(Assessment2.solution("abababab"), 2);
         assertEquals(Assessment2.solution("abcabcabc"), 3);
@@ -29,6 +29,8 @@ public class Assessment2Test {
     @Test
     public void testBig() {
 
+        assertEquals(Assessment2.solution("DjdSnhNPBxrYkWGHAuJltKbzM"), 25);
+        assertEquals(Assessment2.solution("DxrDjdSnhNPBxrYkWGHAuJltKbzMYKM"), 25);
         assertEquals(Assessment2.solution(big1), 25);
     }
 

@@ -16,7 +16,7 @@ public class Assessment2 {
 
 
         // Keep a map of the last position seen for the char
-        Map<Character, Integer> lastPosition = new HashMap<>(s.length());
+        Map<Character, Integer> rightmostPositionMap = new HashMap<>(s.length());
 
         int maxSubstrLen = 0 ; // max substring length seen so far
         int currentSubstrLen = 0; // length of the current substring under consideration
@@ -28,8 +28,8 @@ public class Assessment2 {
             // then record its position
             // It also means, current substring can be extended
             char c = s.charAt(i);
-            if (! lastPosition.containsKey(c)) {
-                lastPosition.put(c, i);
+            if (! rightmostPositionMap.containsKey(c)) {
+                rightmostPositionMap.put(c, i);
                 currentSubstrLen ++; // we are still in a substring without repetition
                 if (currentSubstrLen > maxSubstrLen) {
                     maxSubstrLen = currentSubstrLen;
@@ -41,18 +41,23 @@ public class Assessment2 {
             // then was it seen before the current substring started?
             // if yes then we are still in a valid substring
             // if not, we need to start a new substring
-            if ( lastPosition.get(c) < startsAt) {
+
+            int lastDuplicateAt = rightmostPositionMap.get(c);
+            if ( lastDuplicateAt < startsAt) {
                 currentSubstrLen ++;
-                if (currentSubstrLen > maxSubstrLen) {
-                    maxSubstrLen = currentSubstrLen;
-                }
             } else {
-                currentSubstrLen = 1;
-                startsAt = i;
+                // BAD BAD BAD startsAt = i; // BAD BAD BAD : Cannot start the next substring at THIS position
+                // BAD BAD BAD currentSubstrLen = 1; // need to compute the proper currentSubstrLen
+                startsAt = lastDuplicateAt + 1;
+                currentSubstrLen = i - lastDuplicateAt;
+            }
+
+            if (currentSubstrLen > maxSubstrLen) {
+                maxSubstrLen = currentSubstrLen;
             }
 
             // we need to update the last position
-            lastPosition.put(c, i);
+            rightmostPositionMap.put(c, i);
         }
 
         return maxSubstrLen;
