@@ -1,5 +1,6 @@
 package avachat.leetcode.easy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Prob1104PathInZigZagBinaryTree {
@@ -46,6 +47,16 @@ Constraints:
 
     public List<Integer> pathInZigZagTree(int label) {
 
+
+        /*
+
+        GOOD : First impl ran, space time better than 100%
+
+        BAD : Took a while to get the loop right
+
+         */
+
+
         // create an index with power of 2
         // note that the problem states root is at level 1
         // each level start at 2^(n-1) and ends at 2^n - 1
@@ -62,7 +73,6 @@ Constraints:
 
         // now locate, using binary search the level where label exists
         // the label exists at level, where levelStart[level] <= label levelStart[level+1]
-        int level = -1;
         int left = 1;
         int right = levelStart.length;
         int mid = left + ((right - left) / 2);
@@ -76,7 +86,42 @@ Constraints:
             }
         }
 
-        return null;
+        int level = mid;
+        List<Integer> path = new ArrayList<>(level);
+        int current = label;
+        while (current > 1) {
+            // whatever current is, add to the list
+            // flip position
+            // find parent
+            path.add(0, current);
+            int position = current; // where parent would be if level was written correctly
+            // reverse position
+            position = levelStart[level + 1] - 1 - current + levelStart[level];
+            // for 8 : position = 16 - 1 - 8 + 8 = 15
+            // for 15 : position = 16 - 1 - 15 + 8 = 8
+            // for 12 : position = 16 - 1 - 12 + 8 = 11
+            // for 10 : position = 16 - 1 - 10 + 8 = 13
+            // this position is what goes in the path
+            // based on the effective position, calculate parent
+            current = position / 2;
+            level --;
+            // trace through :
+            // if current was at 12
+            // list.add 12
+            // flip position to 11
+            // current = 5
+            // list.add 5
+            // flip position to 6
+            // current = 3
+            // list add 3
+            // flip position to 2
+            // parent = 1
+        }
+
+        // finally add 1 ro the path
+        path.add(0, current);
+
+        return path;
     }
 
 
