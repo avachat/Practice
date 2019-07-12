@@ -1,6 +1,6 @@
 package avachat.leetcode.medium;
 
-public class Prob033SearchInRotatedArray {
+public class Prob0033SearchInRotatedArray {
 
     /*
 
