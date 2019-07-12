@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class Prob39CombinationSum {
+public class Prob0039CombinationSum {
 
     /*
 
