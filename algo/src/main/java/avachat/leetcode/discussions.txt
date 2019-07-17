@@ -1,0 +1,5 @@
+
+https://leetcode.com/problems/swap-nodes-in-pairs/discuss/331268/with-detailed-comments-java-0ms-better-spacetime-than-100
+
+https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/discuss/336886/Java-%3A-100-better-on-spacetime-%3A-With-detailed-explanation-%3A-Beats
+
