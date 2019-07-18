@@ -12,9 +12,9 @@
     </parent>
 
     <groupId>Practice</groupId>
-    <artifactId>avachat-algo</artifactId>
+    <artifactId>practiec-algo</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>algo</name>
+    <name>practice.algo</name>
     <url>http://maven.apache.org</url>
 
     <properties>

@@ -7,10 +7,9 @@
     <artifactId>practice-learn</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <groupId>Practice</groupId>
   <artifactId>avachat-learn-core</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>avachat.learn.core</name>
+  <name>practice.learn.core</name>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -19,13 +18,13 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <version>4.12</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
-      <artifactId>netty</artifactId>
-      <version>3.9.1.1.Final</version>
+	<artifactId>netty</artifactId>
+    <version>3.9.1.1.Final</version>
     </dependency>
   </dependencies>
 </project>
