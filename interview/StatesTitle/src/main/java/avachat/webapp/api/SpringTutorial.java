@@ -72,6 +72,6 @@ public class SpringTutorial {
     @RequestMapping(method = GET, value = "/spring/tutorial/quote")
     public String fetchRandomQuote() {
         QuoteResponse quoteResponse = restTemplate.getForObject(API_URL, QuoteResponse.class);
-        return quoteResponse.getValue().getQuote();
+        return quoteResponse.getValue().getQuote() + "\n";
     }
 }

@@ -9,6 +9,7 @@
     <name>practice</name>
     <modules>
         <module>algo</module>
+        <module>interview</module>
         <module>learn</module>
     </modules>
 
