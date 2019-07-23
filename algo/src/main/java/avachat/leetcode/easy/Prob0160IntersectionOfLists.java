@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob160IntersectionOfLists {
+public class Prob0160IntersectionOfLists {
 
 
     /*

@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob942DIStringMatch {
+public class Prob0942DIStringMatch {
 
     /*
 

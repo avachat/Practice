@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob104MaxDepthOfBinaryTree {
+public class Prob0104MaxDepthOfBinaryTree {
 
 
     /*

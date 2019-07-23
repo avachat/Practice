@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob226InvertBinaryTree {
+public class Prob0226InvertBinaryTree {
 
     /*
     Invert a binary tree.

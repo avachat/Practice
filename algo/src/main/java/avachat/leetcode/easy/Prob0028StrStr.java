@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob28StrStr {
+public class Prob0028StrStr {
 
 
     /*

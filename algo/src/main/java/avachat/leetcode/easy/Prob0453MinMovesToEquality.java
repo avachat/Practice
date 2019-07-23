@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob453MinMovesToEquality {
+public class Prob0453MinMovesToEquality {
 
 
     /*

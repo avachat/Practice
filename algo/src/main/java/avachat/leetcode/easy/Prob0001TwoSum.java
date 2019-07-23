@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Created by Abhay Avachat 212552612 on 1/30/18.
  */
-public class Prob1TwoSum {
+public class Prob0001TwoSum {
 
   /*
   Given an array of integers, return indices of the two numbers such that they add up to a specific target.

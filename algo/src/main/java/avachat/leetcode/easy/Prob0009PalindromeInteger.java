@@ -22,7 +22,7 @@ package avachat.leetcode.easy;
  *
  * Created by Abhay Avachat 212552612 on 1/30/18.
  */
-public class Prob9PalindromeInteger {
+public class Prob0009PalindromeInteger {
 
   /*
      MISTAKES

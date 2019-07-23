@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob671SecondMinimumBinaryTree {
+public class Prob0671SecondMinimumBinaryTree {
 
     /*
 

@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob993CousinsBinaryTree {
+public class Prob0993CousinsBinaryTree {
 
     /*
     n a binary tree, the root node is at depth 0, and children of each depth k node are at depth k+1.

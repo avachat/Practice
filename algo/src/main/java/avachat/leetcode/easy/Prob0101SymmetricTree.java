@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob101SymmetricTree {
+public class Prob0101SymmetricTree {
 
 
     /*

@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob530MinDiffBST {
+public class Prob0530MinDiffBST {
 
     /*
 

@@ -12,7 +12,7 @@ public class Prob13RomanToIntTest {
   @Test
   public void romanToInt() throws Exception {
 
-    Prob13RomanToInt testObj = new Prob13RomanToInt();
+    Prob0013RomanToInt testObj = new Prob0013RomanToInt();
 
     assertEquals(1, testObj.romanToInt("I"));
     assertEquals(2, testObj.romanToInt("II"));

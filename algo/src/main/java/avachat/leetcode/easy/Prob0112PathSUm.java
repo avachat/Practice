@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob112PathSUm {
+public class Prob0112PathSUm {
 
     /*
     Given a binary tree and a sum,

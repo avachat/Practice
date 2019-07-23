@@ -6,7 +6,7 @@ import static org.testng.Assert.*;
 
 public class Prob58LengthOfLastWordTest {
 
-    private Prob58LengthOfLastWord testObj = new Prob58LengthOfLastWord();
+    private Prob0058LengthOfLastWord testObj = new Prob0058LengthOfLastWord();
 
     @Test
     public void  testOneChar() {

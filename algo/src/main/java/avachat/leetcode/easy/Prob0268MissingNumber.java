@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob268MissingNumber {
+public class Prob0268MissingNumber {
 
     /*
 

@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob908SmallestRange {
+public class Prob0908SmallestRange {
 
     /*
 

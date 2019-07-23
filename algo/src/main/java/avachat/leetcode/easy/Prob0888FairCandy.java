@@ -3,7 +3,7 @@ package avachat.leetcode.easy;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Prob888FairCandy {
+public class Prob0888FairCandy {
 
     /*
 

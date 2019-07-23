@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob69Sqrt {
+public class Prob0069Sqrt {
 
     /*
     Compute and return the square root of x, where x is guaranteed to be a non-negative integer.

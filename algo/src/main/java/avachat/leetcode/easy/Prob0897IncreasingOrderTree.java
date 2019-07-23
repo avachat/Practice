@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob897IncreasingOrderTree {
+public class Prob0897IncreasingOrderTree {
 
     /*
 

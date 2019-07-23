@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob674LongestContIncrSubseq {
+public class Prob0674LongestContIncrSubseq {
 
     /*
     Given an unsorted array of integers, find the length of longest continuous increasing subsequence (subarray).

@@ -22,7 +22,7 @@ All given inputs are in lowercase letters a-z.
 
  */
 
-public class Prob14LongestCommonPrefix {
+public class Prob0014LongestCommonPrefix {
 
 
     /*

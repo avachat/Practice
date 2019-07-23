@@ -6,7 +6,7 @@ import static org.testng.Assert.*;
 
 public class Prob994RottingOrangesTest {
 
-    private static final Prob994RottingOranges testObj = new Prob994RottingOranges();
+    private static final Prob0994RottingOranges testObj = new Prob0994RottingOranges();
 
     @Test
     public void testIt() {

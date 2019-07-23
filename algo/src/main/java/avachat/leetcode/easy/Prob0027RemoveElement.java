@@ -23,7 +23,7 @@ Your function should return length = 2, with the first two elements of nums bein
  *
  * Created by Abhay Avachat on 2/7/18.
  */
-public class Prob27RemoveElement {
+public class Prob0027RemoveElement {
 
 
   /*

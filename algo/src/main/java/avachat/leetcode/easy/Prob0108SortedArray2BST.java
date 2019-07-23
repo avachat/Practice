@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob108SortedArray2BST {
+public class Prob0108SortedArray2BST {
 
     /*
 

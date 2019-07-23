@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
-public class Prob933NumberOfRecentCalls {
+public class Prob0933NumberOfRecentCalls {
 
     /*
     Write a class RecentCounter to count recent requests.

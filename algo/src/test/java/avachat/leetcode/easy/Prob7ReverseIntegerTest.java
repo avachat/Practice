@@ -9,11 +9,11 @@ import org.junit.Test;
  */
 public class Prob7ReverseIntegerTest {
 
-  private static Prob7ReverseInteger testObj = null;
+  private static Prob0007ReverseInteger testObj = null;
 
   @BeforeClass
   public static void setup() {
-    testObj = new Prob7ReverseInteger();
+    testObj = new Prob0007ReverseInteger();
   }
 
   @Test

@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob938RangeSumBST {
+public class Prob0938RangeSumBST {
 
     /*
 

@@ -2,7 +2,7 @@ package avachat.leetcode.easy;
 
 import java.util.Arrays;
 
-public class Prob455AssignCookies {
+public class Prob0455AssignCookies {
 
 
     /*

@@ -2,7 +2,7 @@ package avachat.leetcode.easy;
 
 import java.util.*;
 
-public class Prob970PowerfulIntegers {
+public class Prob0970PowerfulIntegers {
 
 
     /*

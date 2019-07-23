@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob796RotateString {
+public class Prob0796RotateString {
 
     /*
 

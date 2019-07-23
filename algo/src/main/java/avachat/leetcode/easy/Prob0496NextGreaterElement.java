@@ -2,7 +2,7 @@ package avachat.leetcode.easy;
 
 import java.util.*;
 
-public class Prob496NextGreaterElement {
+public class Prob0496NextGreaterElement {
 
     /*
 

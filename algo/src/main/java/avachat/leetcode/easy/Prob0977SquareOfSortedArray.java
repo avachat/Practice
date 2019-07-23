@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob977SquareOfSortedArray {
+public class Prob0977SquareOfSortedArray {
 
     /*
 

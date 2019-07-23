@@ -13,7 +13,7 @@ public class Prob9PalindromeIntegerTest {
   @Test
   public void isPalindrome() {
 
-    Prob9PalindromeInteger testObj = new Prob9PalindromeInteger();
+    Prob0009PalindromeInteger testObj = new Prob0009PalindromeInteger();
 
     assertFalse(testObj.isPalindrome(10)); // orig code failed this test case
     assertFalse(testObj.isPalindrome(100)); // orig code failed this test case

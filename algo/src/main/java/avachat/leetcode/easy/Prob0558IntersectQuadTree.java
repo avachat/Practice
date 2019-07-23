@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob558IntersectQuadTree {
+public class Prob0558IntersectQuadTree {
 
     /*
 

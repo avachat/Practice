@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob925LongPressedName {
+public class Prob0925LongPressedName {
 
     /*
 

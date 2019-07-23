@@ -14,7 +14,7 @@ the contiguous subarray [4,-1,2,1] has the largest sum = 6.
  *
  * Created by Abhay Avachat on 2/8/18.
  */
-public class Prob53MaxSubarray {
+public class Prob0053MaxSubarray {
 
 
   /*

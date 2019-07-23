@@ -6,7 +6,7 @@ import static org.testng.Assert.*;
 
 public class Prob67AddBinaryTest {
 
-    private Prob67AddBinary testObj = new Prob67AddBinary();
+    private Prob0067AddBinary testObj = new Prob0067AddBinary();
 
     @Test
     public void testAll() {

@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob783MinDistanceBSTNodes {
+public class Prob0783MinDistanceBSTNodes {
 
     /*
 

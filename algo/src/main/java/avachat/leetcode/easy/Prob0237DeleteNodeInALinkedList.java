@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob237DeleteNodeInALinkedList {
+public class Prob0237DeleteNodeInALinkedList {
 
     /*
 

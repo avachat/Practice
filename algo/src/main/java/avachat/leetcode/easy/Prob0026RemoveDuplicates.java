@@ -19,7 +19,7 @@ It doesn't matter what you leave beyond the new length.
 
  */
 
-public class Prob26RemoveDuplicates {
+public class Prob0026RemoveDuplicates {
 
     /*
 

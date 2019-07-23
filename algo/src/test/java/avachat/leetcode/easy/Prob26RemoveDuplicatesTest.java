@@ -8,7 +8,7 @@ public class Prob26RemoveDuplicatesTest {
 
     @Test
     public void testRemoveDuplicates() throws Exception {
-        Prob26RemoveDuplicates testObj = new Prob26RemoveDuplicates();
+        Prob0026RemoveDuplicates testObj = new Prob0026RemoveDuplicates();
 
         int[] emptyArr = new int[0];
         assertEquals(0, testObj.removeDuplicates(emptyArr));

@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob617MergeBinaryTrees {
+public class Prob0617MergeBinaryTrees {
 
     /*
 

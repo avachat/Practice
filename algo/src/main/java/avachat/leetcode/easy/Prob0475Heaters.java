@@ -2,7 +2,7 @@ package avachat.leetcode.easy;
 
 import java.util.Arrays;
 
-public class Prob475Heaters {
+public class Prob0475Heaters {
 
 
     /*

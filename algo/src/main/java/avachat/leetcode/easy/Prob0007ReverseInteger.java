@@ -35,7 +35,7 @@ package avachat.leetcode.easy;
  */
 
 
-public class Prob7ReverseInteger {
+public class Prob0007ReverseInteger {
 
   /**
    * NOTE :

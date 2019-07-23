@@ -12,7 +12,7 @@ public class Prob27RemoveElementTest {
   @Test
   public void removeElement() throws Exception {
 
-    Prob27RemoveElement testObj = new Prob27RemoveElement();
+    Prob0027RemoveElement testObj = new Prob0027RemoveElement();
 
     int[] emptyArr = new int[0];
     assertEquals(0, testObj.removeElement(emptyArr, 0));

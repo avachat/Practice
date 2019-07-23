@@ -6,7 +6,7 @@ import static org.testng.Assert.*;
 
 public class Prob69SqrtTest {
 
-    private Prob69Sqrt testObj = new Prob69Sqrt();
+    private Prob0069Sqrt testObj = new Prob0069Sqrt();
 
     @Test
     public void testAll() {

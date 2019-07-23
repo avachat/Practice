@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob883ProjectionArea {
+public class Prob0883ProjectionArea {
 
 
     /*

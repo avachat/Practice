@@ -12,7 +12,7 @@ public class Prob66PlusOneTest {
   @Test
   public void testPlusOne() throws Exception {
 
-    Prob66PlusOne testObj = new Prob66PlusOne();
+    Prob0066PlusOne testObj = new Prob0066PlusOne();
 
     assertEquals(new int[] {1}, testObj.plusOne(new int[] {0}));
     assertEquals(new int[] {2}, testObj.plusOne(new int[] {1}));

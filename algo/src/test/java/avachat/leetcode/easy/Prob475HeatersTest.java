@@ -3,14 +3,13 @@ package avachat.leetcode.easy;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.testng.Assert.*;
 
 public class Prob475HeatersTest {
 
-    private static Prob475Heaters testObj = new Prob475Heaters();
+    private static Prob0475Heaters testObj = new Prob0475Heaters();
 
 
     @Test

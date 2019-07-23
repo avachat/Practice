@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-public class Prob118PascalsTriangle {
+public class Prob0118PascalsTriangle {
 
     /*
     Given a non-negative integer numRows, generate the first numRows of Pascal's triangle.

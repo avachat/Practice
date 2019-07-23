@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob234PalndromeLinkedList {
+public class Prob0234PalndromeLinkedList {
 
     /*
 

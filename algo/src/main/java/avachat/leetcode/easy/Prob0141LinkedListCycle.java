@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob141LinkedListCycle {
+public class Prob0141LinkedListCycle {
 
 
 

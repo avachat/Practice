@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob83RemoveDuplicatesSortedLIst {
+public class Prob0083RemoveDuplicatesSortedLIst {
 
     /*
     Given a sorted linked list, delete all duplicates such that each element appear only once.

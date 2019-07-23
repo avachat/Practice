@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob628MaxProd3Nums {
+public class Prob0628MaxProd3Nums {
 
     /*
     Given an integer array, find three numbers whose product is maximum and output the maximum product.

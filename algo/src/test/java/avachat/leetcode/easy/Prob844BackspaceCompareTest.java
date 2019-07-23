@@ -6,7 +6,7 @@ import static org.testng.Assert.*;
 
 public class Prob844BackspaceCompareTest {
 
-    private static final Prob844BackspaceCompare testObj = new Prob844BackspaceCompare();
+    private static final Prob0844BackspaceCompare testObj = new Prob0844BackspaceCompare();
 
     @Test
     public void testIt() {

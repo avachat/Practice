@@ -2,7 +2,7 @@ package avachat.leetcode.easy;
 
 import java.util.List;
 
-public class Prob559DepthNaryTree {
+public class Prob0559DepthNaryTree {
 
     /*
 

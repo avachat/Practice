@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob669TrimBST {
+public class Prob0669TrimBST {
 
     /*
 

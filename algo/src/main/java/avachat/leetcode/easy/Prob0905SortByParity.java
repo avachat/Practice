@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob905SortByParity {
+public class Prob0905SortByParity {
 
     /*
 

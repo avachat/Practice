@@ -39,7 +39,7 @@ import java.util.List;
  *
  * Created by Abhay Avachat 212552612 on 2/8/18.
  */
-public class Prob38CountSay {
+public class Prob0038CountSay {
 
   /*
 

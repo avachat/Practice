@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob189RotateArray {
+public class Prob0189RotateArray {
 
     /*
 

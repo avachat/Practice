@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob844BackspaceCompare {
+public class Prob0844BackspaceCompare {
 
     /*
 

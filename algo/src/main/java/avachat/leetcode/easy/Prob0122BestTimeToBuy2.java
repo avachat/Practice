@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob122BestTimeToBuy2 {
+public class Prob0122BestTimeToBuy2 {
 
     /*
 

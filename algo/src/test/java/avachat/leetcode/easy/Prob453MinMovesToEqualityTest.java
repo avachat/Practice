@@ -1,12 +1,8 @@
 package avachat.leetcode.easy;
 
-import org.junit.Test;
-
-import static org.testng.Assert.*;
-
 public class Prob453MinMovesToEqualityTest {
 
-    private static Prob453MinMovesToEquality testObj = new Prob453MinMovesToEquality();
+    private static Prob0453MinMovesToEquality testObj = new Prob0453MinMovesToEquality();
 
     // TODO : This test case gives java compilation issues :-( Need to look into this
 

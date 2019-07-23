@@ -2,7 +2,7 @@ package avachat.leetcode.easy;
 
 import java.util.Arrays;
 
-public class Prob561ArrayPartition {
+public class Prob0561ArrayPartition {
 
     /*
 

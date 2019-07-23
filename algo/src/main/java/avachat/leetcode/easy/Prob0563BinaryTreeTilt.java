@@ -1,7 +1,7 @@
 package avachat.leetcode.easy;
 
 
-public class Prob563BinaryTreeTilt {
+public class Prob0563BinaryTreeTilt {
 
     /*
 

@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob860LemonadeChange {
+public class Prob0860LemonadeChange {
 
     /*
     At a lemonade stand, each lemonade costs $5.

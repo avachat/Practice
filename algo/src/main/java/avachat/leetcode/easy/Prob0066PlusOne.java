@@ -11,7 +11,7 @@ The digits are stored such that the most significant digit is at the head of the
 /**
  * Created by Abhay Avachat on 2/16/18.
  */
-public class Prob66PlusOne {
+public class Prob0066PlusOne {
 
   /*
 

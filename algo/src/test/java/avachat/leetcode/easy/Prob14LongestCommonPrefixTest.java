@@ -6,7 +6,7 @@ import static org.testng.Assert.*;
 
 public class Prob14LongestCommonPrefixTest {
 
-    private Prob14LongestCommonPrefix testObj = new Prob14LongestCommonPrefix();
+    private Prob0014LongestCommonPrefix testObj = new Prob0014LongestCommonPrefix();
 
     @Test
     public void testHappyPath() {

@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob110BalancedBinaryTree {
+public class Prob0110BalancedBinaryTree {
 
 
     /*

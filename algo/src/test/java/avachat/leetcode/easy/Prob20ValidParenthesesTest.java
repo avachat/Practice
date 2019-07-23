@@ -6,7 +6,7 @@ import static org.testng.Assert.*;
 
 public class Prob20ValidParenthesesTest {
 
-    private static final Prob20ValidParentheses testObj = new Prob20ValidParentheses();
+    private static final Prob0020ValidParentheses testObj = new Prob0020ValidParentheses();
 
     @Test
     public void testValid() {

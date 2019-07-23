@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob203RemoveLinkedListElements {
+public class Prob0203RemoveLinkedListElements {
 
     /*
 

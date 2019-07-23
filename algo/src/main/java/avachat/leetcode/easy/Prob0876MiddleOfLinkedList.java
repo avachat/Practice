@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob876MiddleOfLinkedList {
+public class Prob0876MiddleOfLinkedList {
 
 
     /*

@@ -3,7 +3,7 @@ package avachat.leetcode.easy;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Prob205IsomorphicStrings {
+public class Prob0205IsomorphicStrings {
 
     /*
     Given two strings s and t, determine if they are isomorphic.

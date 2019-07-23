@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob198HouseRobber {
+public class Prob0198HouseRobber {
 
 
     /*

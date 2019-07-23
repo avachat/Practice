@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob58LengthOfLastWord {
+public class Prob0058LengthOfLastWord {
 
     /*
     Given a string s consists of upper/lower-case alphabets and empty space characters ' ', return the length of last word in the string.

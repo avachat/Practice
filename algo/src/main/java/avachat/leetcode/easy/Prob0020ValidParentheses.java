@@ -44,7 +44,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Prob20ValidParentheses {
+public class Prob0020ValidParentheses {
 
     private final Set<Character> OPEN_PAREN = Stream.of('(', '[', '{').collect(Collectors.toSet());
     private final Set<Character> CLOSE_PAREN = Stream.of(')', ']', '}').collect(Collectors.toSet());

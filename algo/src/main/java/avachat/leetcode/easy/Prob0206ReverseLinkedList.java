@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob206ReverseLinkedList {
+public class Prob0206ReverseLinkedList {
 
     /*
 

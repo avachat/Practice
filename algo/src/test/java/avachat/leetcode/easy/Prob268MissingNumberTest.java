@@ -6,7 +6,7 @@ import static org.testng.Assert.*;
 
 public class Prob268MissingNumberTest {
 
-    private static Prob268MissingNumber testObj = new Prob268MissingNumber();
+    private static Prob0268MissingNumber testObj = new Prob0268MissingNumber();
 
     @Test
     public void testAll() {

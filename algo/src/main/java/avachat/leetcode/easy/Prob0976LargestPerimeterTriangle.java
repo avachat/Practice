@@ -2,7 +2,7 @@ package avachat.leetcode.easy;
 
 import java.util.Arrays;
 
-public class Prob976LargestPerimeterTriangle {
+public class Prob0976LargestPerimeterTriangle {
 
     /*
 

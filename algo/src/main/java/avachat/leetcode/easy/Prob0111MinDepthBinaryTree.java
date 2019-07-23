@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob111MinDepthBinaryTree {
+public class Prob0111MinDepthBinaryTree {
 
     /*
     Given a binary tree, find its minimum depth.

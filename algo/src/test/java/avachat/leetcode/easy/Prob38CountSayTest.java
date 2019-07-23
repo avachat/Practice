@@ -12,7 +12,7 @@ public class Prob38CountSayTest {
   @Test
   public void countAndSay() throws Exception {
 
-    Prob38CountSay testObj = new Prob38CountSay();
+    Prob0038CountSay testObj = new Prob0038CountSay();
 
     assertEquals("1", testObj.countAndSay(1));
     assertEquals("11", testObj.countAndSay(2));

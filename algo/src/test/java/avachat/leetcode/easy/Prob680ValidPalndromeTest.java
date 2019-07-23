@@ -6,7 +6,7 @@ import static org.testng.Assert.*;
 
 public class Prob680ValidPalndromeTest {
 
-    private static final Prob680ValidPalndrome testObj = new Prob680ValidPalndrome();
+    private static final Prob0680ValidPalndrome testObj = new Prob0680ValidPalndrome();
 
     @Test
     public void testAll () {

@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob994RottingOranges {
+public class Prob0994RottingOranges {
 
     /*
 

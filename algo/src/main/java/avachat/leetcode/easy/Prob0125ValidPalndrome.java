@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob125ValidPalndrome {
+public class Prob0125ValidPalndrome {
 
     /*
 

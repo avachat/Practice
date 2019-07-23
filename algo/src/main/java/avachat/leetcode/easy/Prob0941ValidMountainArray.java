@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob941ValidMountainArray {
+public class Prob0941ValidMountainArray {
 
     /*
 

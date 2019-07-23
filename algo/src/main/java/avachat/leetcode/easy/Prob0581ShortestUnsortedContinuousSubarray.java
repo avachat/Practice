@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob581ShortestUnsortedContinuousSubarray {
+public class Prob0581ShortestUnsortedContinuousSubarray {
 
     /*
 

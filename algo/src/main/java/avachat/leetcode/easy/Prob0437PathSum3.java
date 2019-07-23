@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Prob437PathSum3 {
+public class Prob0437PathSum3 {
 
     /*
     You are given a binary tree in which each node contains an integer value.

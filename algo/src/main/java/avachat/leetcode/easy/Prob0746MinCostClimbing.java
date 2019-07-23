@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob746MinCostClimbing {
+public class Prob0746MinCostClimbing {
 
     /*
 

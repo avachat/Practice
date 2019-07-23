@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob67AddBinary {
+public class Prob0067AddBinary {
 
 
     /*

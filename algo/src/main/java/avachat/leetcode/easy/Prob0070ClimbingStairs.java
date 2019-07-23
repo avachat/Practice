@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob70ClimbingStairs {
+public class Prob0070ClimbingStairs {
 
     /*
 

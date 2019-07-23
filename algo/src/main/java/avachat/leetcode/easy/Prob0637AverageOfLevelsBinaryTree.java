@@ -3,7 +3,7 @@ package avachat.leetcode.easy;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Prob637AverageOfLevelsBinaryTree {
+public class Prob0637AverageOfLevelsBinaryTree {
 
     /*
     Given a non-empty binary tree, return the average value of the nodes on each level in the form of an array.

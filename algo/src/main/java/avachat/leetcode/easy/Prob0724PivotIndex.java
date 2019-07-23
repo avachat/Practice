@@ -1,6 +1,6 @@
 package avachat.leetcode.easy;
 
-public class Prob724PivotIndex {
+public class Prob0724PivotIndex {
 
     /*
 
