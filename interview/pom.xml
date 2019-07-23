@@ -13,6 +13,7 @@
     <name>practice.interview</name>
     <modules>
         <module>StatesTitle</module>
+        <module>Chegg</module>
     </modules>
 
 
