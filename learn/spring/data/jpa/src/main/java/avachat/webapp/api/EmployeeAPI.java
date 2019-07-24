@@ -3,6 +3,7 @@ package avachat.webapp.api;
 
 import avachat.persistence.entity.Employee;
 import avachat.persistence.service.EmployeeService;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @RestController
+@Slf4j
 public class EmployeeAPI {
-
-    private static final Logger log = LoggerFactory.getLogger(EmployeeAPI.class);
 
     private final EmployeeService employeeService;
 
@@ -39,7 +39,7 @@ public class EmployeeAPI {
 
     @RequestMapping(method = POST, value = "/employees")
     public Employee createOne(@RequestBody Employee employee) {
-        //log.debug("POST request for " + employee.toString());
+        log.debug("POST request for " + employee);
         return employeeService.createOne(employee);
     }
 

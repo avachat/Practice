@@ -1,14 +1,21 @@
 package avachat.persistence.entity;
 
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
+@Getter
+@Setter
+@ToString
 public class Employee {
-
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -22,24 +29,4 @@ public class Employee {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "ID = " + employeeId + ", name = " + name;
-    }
-
-    public Long getEmployeeId() {
-        return employeeId;
-    }
-
-    public void setEmployeeId(Long employeeId) {
-        this.employeeId = employeeId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }
