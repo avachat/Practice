@@ -10,7 +10,7 @@
 	<artifactId>practice-learn-spring-data-jpa</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>practice.learn.springo.data.jpa</name>
+	<name>practice.learn.spring.data.jpa</name>
 	<description>Starter WebApp</description>
 
 	<properties>

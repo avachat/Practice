@@ -10,7 +10,7 @@
     <artifactId>practice-learn-spring-data</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>practice.learn.springo.data</name>
+    <name>practice.learn.spring.data</name>
     <modules>
         <module>jpa</module>
     </modules>
