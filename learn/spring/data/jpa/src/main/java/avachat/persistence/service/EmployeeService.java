@@ -22,13 +22,19 @@ public class EmployeeService {
     }
 
     public List<Employee> findAll() {
-        log.debug("Calling employeeRepository.findAll");
-        List<Employee> result = employeeRepository.findAll();
-        log.debug("Found " + result);
-        return result;
+        //log.debug("Calling employeeRepository.findAll");
+        //List<Employee> result = employeeRepository.findAll();
+        //log.debug("Found " + result);
+        //return result;
+        return employeeRepository.findAll();
     }
 
     public List<Employee> findAllById(long id) {
         return employeeRepository.findAllByEmployeeId(id);
+    }
+
+    public Employee createOne(Employee employee) {
+        //log.debug("Saving employee " + employee.toString());
+        return employeeRepository.save(employee);
     }
 }
