@@ -22,7 +22,7 @@ public class UserAddressAPI {
         return userAddressService.createOne(userId, userAddress);
     }
 
-    @GetMapping("/users/addresses")
+    @GetMapping("/addresses")
     public List<UserAddress> findAll() {
         return userAddressService.findAll();
     }
