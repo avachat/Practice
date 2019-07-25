@@ -19,8 +19,10 @@ import java.util.Optional;
 @Transactional
 public class UserAddressService {
 
+    /*
     @PersistenceContext
     private EntityManager entityManager;
+    */
 
     private final UserRepository userRepository;
     private final UserAddressRepository userAddressRepository;
@@ -40,6 +42,8 @@ public class UserAddressService {
 
         /*
         TODO : Why does the following code gives serialization error?
+        TODO : Maybe objects are being cached and used?
+
         User user = entityManager.getReference(User.class, userId);
         userAddress.setUser(user);
         UserAddress createdUserAddress = userAddressRepository.save(userAddress);
