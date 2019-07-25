@@ -8,11 +8,15 @@ curl -X POST -H "Content-Type: application/json" http://localhost:8080/users -d 
 curl -X GET http://localhost:8080/users
 
 # Create addresses
+# 1
 curl -X POST -H "Content-Type: application/json" http://localhost:8080/users/1/addresses -d '{"firstName": "one", "line1": "Address One 1", "city" : "Santa Clara", "state": "CA", "zip": "11111", "country": "USA"}'
 curl -X POST -H "Content-Type: application/json" http://localhost:8080/users/1/addresses -d '{"firstName": "one", "line1": "Address One 2", "city" : "Santa Clara", "state": "CA", "zip": "22222", "country": "USA"}'
 curl -X POST -H "Content-Type: application/json" http://localhost:8080/users/1/addresses -d '{"firstName": "one", "line1": "Address One 3", "city" : "Santa Clara", "state": "CA", "zip": "33333", "country": "USA"}'
+# 2
 curl -X POST -H "Content-Type: application/json" http://localhost:8080/users/2/addresses -d '{"firstName": "two", "line1": "Address Two 1", "city" : "Santa Clara", "state": "CA", "zip": "11111", "country": "USA"}'
 curl -X POST -H "Content-Type: application/json" http://localhost:8080/users/2/addresses -d '{"firstName": "two", "line1": "Address Two 2", "city" : "Santa Clara", "state": "CA", "zip": "22222", "country": "USA"}'
+# 3
+curl -X POST -H "Content-Type: application/json" http://localhost:8080/users/3/addresses -d '{"firstName": "three", "line1": "Address Three 1", "city" : "Santa Clara", "state": "CA", "zip": "11111", "country": "USA"}'
 
 # Find all addresses
 curl -X GET http://localhost:8080/addresses
