@@ -1,0 +1,9 @@
+
+# Create users
+curl -X POST -H "Content-Type: application/json" http://localhost:8080/users -d '{"loginHandle": "One"}'
+curl -X POST -H "Content-Type: application/json" http://localhost:8080/users -d '{"loginHandle": "Two"}'
+curl -X POST -H "Content-Type: application/json" http://localhost:8080/users -d '{"loginHandle": "Three"}'
+
+# Create addresses
+curl -X POST -H "Content-Type: application/json" http://localhost:8080/users/1/addresses -d '{"firstName": "one", "line1": "Address One 1", "city" : "Santa Clara", "state": "CA", "zip": "11111", "country": "USA"}'
+

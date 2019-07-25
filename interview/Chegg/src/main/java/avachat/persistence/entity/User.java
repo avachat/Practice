@@ -24,7 +24,6 @@ public class User {
      */
 
     // TODO : Not sure why a sequence name has to be specified here, and not in other example in package learn.
-    // TODO : Could be because of the table name being 'user', and that conflicts somehow with postgres user?
     // TODO : Without the explicit sequence name, get a runtime error saying hibernate_sequence does not exist
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "chegg_user_userid_seq")
