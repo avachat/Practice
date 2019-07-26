@@ -132,6 +132,7 @@ public class OrderChangeService {
 
         // commit locally
         log.info("Adding address change for " + orderId);
+        // NOTE : Starts and commits a transaction
         PrevAndNew prevAndNew = changeAddressOfAnOrderAndCommit(orderId, newAddress);
         OrderAddress createdOrderAddress = prevAndNew.newOrderAddress;
 
@@ -152,6 +153,7 @@ public class OrderChangeService {
         // NOTE : And if that happens, the system will be in inconsistent state
         // NOTE : The bigger problems is : we may never know that the system state is not consistent
         log.info("Undoing address change for " + orderId);
+        // NOTE : Starts and commits a transaction
         restorePreviousOrderAddress(prevAndNew);
 
         // return error
