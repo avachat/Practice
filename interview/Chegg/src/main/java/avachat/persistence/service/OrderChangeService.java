@@ -2,8 +2,10 @@ package avachat.persistence.service;
 
 import avachat.failure.Params;
 import avachat.persistence.entity.OrderAddress;
+import avachat.persistence.entity.StatusTracker;
 import avachat.persistence.entity.UserAddress;
 import avachat.persistence.repository.OrderAddressRepository;
+import avachat.persistence.repository.StatusTrackerRepository;
 import avachat.persistence.repository.UserAddressRepository;
 import avachat.warehouse.WarehouseClient;
 import avachat.webapp.api.input.OrderChange;
@@ -19,6 +21,11 @@ import java.util.Map;
 @Slf4j
 public class OrderChangeService {
 
+
+    // TODO : Make these enums
+    public static final String STATUS_TRACKER_INIT = "init";
+    public static final String STATUS_TRACKER_COMPLETE = "complete";
+    public static final String STATUS_TRACKER_ROLL_BACK = "rollback";
 
     public static class OrderChangeTracker {
         long statusTrackerId;
@@ -37,16 +44,16 @@ public class OrderChangeService {
     private final OrderService orderService;
     private final UserAddressRepository userAddressRepository;
     private final OrderAddressRepository orderAddressRepository;
-    private final WarehouseClient warehouseClient;
+    private final StatusTrackerRepository statusTrackerRepository;
 
     public OrderChangeService(@Autowired OrderService orderService,
                               @Autowired UserAddressRepository userAddressRepository,
                               @Autowired OrderAddressRepository orderAddressRepository,
-                              @Autowired WarehouseClient warehouseClient) {
+                              @Autowired StatusTrackerRepository statusTrackerRepository) {
         this.orderService = orderService;
         this.userAddressRepository = userAddressRepository;
         this.orderAddressRepository = orderAddressRepository;
-        this.warehouseClient = warehouseClient;
+        this.statusTrackerRepository = statusTrackerRepository;
     }
 
 
@@ -71,6 +78,10 @@ public class OrderChangeService {
     }
 
     /**
+     * In one transaction :
+     *  1. Create a new address
+     *  2. Create a new order address
+     *  3. Create a new status tracker
      *
      * @param orderId
      * @param newAddress
@@ -80,9 +91,6 @@ public class OrderChangeService {
     public OrderChangeTracker createNewAddressForAnOrderAndCommit(long remoteStatusId,
                                                                   long orderId,
                                                                   UserAddress newAddress) {
-
-        // TODO : Create a tracking record
-        long statusTrackerId = -1;
 
         // retrieve existing address for this order
         OrderAddress existingOrderAddress = retrieveExistingAddress(orderId);
@@ -101,16 +109,46 @@ public class OrderChangeService {
         log.info("Saving new order address to DB " + newOrderAddress);
         OrderAddress createdOrderAddress = orderAddressRepository.save(newOrderAddress);
 
+        // Create a tracking record
+        StatusTracker statusTracker =
+                new StatusTracker(STATUS_TRACKER_INIT,
+                        remoteStatusId,
+                        orderId,
+                        existingOrderAddress.getOrderAddressId(),
+                        newOrderAddress.getOrderAddressId());
+
+        // save it
+        statusTrackerRepository.save(statusTracker);
+        long statusTrackerId = statusTracker.getStatusTrackerId();
+
         return new OrderChangeTracker(statusTrackerId, existingOrderAddress, createdOrderAddress);
     }
 
+
+    /**
+     * In one transaction
+     *  1. Find the ID of the older address
+     *  2. Delete that older record
+     *  3. Mark the transaction status as complete
+     * @param orderChangeTracker
+     */
+    @Transactional
     public void completeChangeOfAddressAndCommit(OrderChangeTracker orderChangeTracker) {
 
-        // TODO : read from change tracker table
+        // Read from change tracker table
+        StatusTracker statusTracker =
+                statusTrackerRepository.findById(orderChangeTracker.statusTrackerId)
+                .orElseThrow(() -> new IllegalArgumentException
+                        ("Weird : could not find status tracker with id = "
+                                + orderChangeTracker.statusTrackerId));
 
+        // Delete the older address now
         deleteOrderAddress(orderChangeTracker.prevOrderAddress);
 
-        // TODO : Update the change tracker table
+        // Update the change tracker table
+        statusTracker.setStatus(STATUS_TRACKER_COMPLETE);
+        statusTracker.setEndedAtToNow();
+        statusTrackerRepository.save(statusTracker);
     }
 
     /**
@@ -130,7 +168,12 @@ public class OrderChangeService {
     public void restorePreviousOrderAddress (OrderChangeTracker orderChangeTracker) {
 
 
-        // TODO : read from change tracker table
+        // Read from change tracker table
+        StatusTracker statusTracker =
+                statusTrackerRepository.findById(orderChangeTracker.statusTrackerId)
+                        .orElseThrow(() -> new IllegalArgumentException
+                                ("Weird : could not find status tracker with id = "
+                                        + orderChangeTracker.statusTrackerId));
 
         OrderAddress previousOrderAddress = orderChangeTracker.prevOrderAddress;
         OrderAddress createdOrderAddress = orderChangeTracker.newOrderAddress;
@@ -141,9 +184,11 @@ public class OrderChangeService {
         log.info("Restoring prev order address " + previousOrderAddress);
         orderAddressRepository.save(previousOrderAddress);
 
-        // TODO : Update the change tracker table
+        // Update the change tracker table
+        statusTracker.setStatus(STATUS_TRACKER_ROLL_BACK);
+        statusTracker.setEndedAtToNow();
+        statusTrackerRepository.save(statusTracker);
 
     }
-
 
 }

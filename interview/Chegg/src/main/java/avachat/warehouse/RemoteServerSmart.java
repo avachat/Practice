@@ -15,8 +15,8 @@ import java.util.Optional;
 public class RemoteServerSmart {
 
     private static final String SERVER_NAME = "smart";
-    private static final String FAILURE_NAME_INIT = "smartServer";
-    private static final String FAILURE_NAME_PROCESS = "smartServer";
+    private static final String FAILURE_NAME_INIT = "smartServerInit";
+    private static final String FAILURE_NAME_PROCESS = "smartServerProcess";
 
     private final RemoteStatusRepository remoteStatusRepository;
 
