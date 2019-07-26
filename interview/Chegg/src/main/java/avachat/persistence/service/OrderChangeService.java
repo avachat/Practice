@@ -6,7 +6,7 @@ import avachat.persistence.entity.UserAddress;
 import avachat.persistence.repository.OrderAddressRepository;
 import avachat.persistence.repository.UserAddressRepository;
 import avachat.warehouse.WarehouseClient;
-import lombok.AllArgsConstructor;
+import avachat.webapp.api.input.OrderChange;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,11 +20,15 @@ import java.util.Map;
 public class OrderChangeService {
 
 
-    private static class PrevAndNew {
+    public static class OrderChangeTracker {
+        long statusTrackerId;
         OrderAddress prevOrderAddress;
         OrderAddress newOrderAddress;
 
-        public PrevAndNew(OrderAddress prevOrderAddress, OrderAddress newOrderAddress) {
+        public OrderChangeTracker(long statusTrackerId,
+                                  OrderAddress prevOrderAddress,
+                                  OrderAddress newOrderAddress) {
+            this.statusTrackerId = statusTrackerId;
             this.prevOrderAddress = prevOrderAddress;
             this.newOrderAddress = newOrderAddress;
         }
@@ -66,10 +70,19 @@ public class OrderChangeService {
         return orderAddressList.get(0);
     }
 
+    /**
+     *
+     * @param orderId
+     * @param newAddress
+     * @return
+     */
     @Transactional
-    // public only for marking transactional
-    public PrevAndNew changeAddressOfAnOrderAndCommit(long orderId,
-                                                         UserAddress newAddress) {
+    public OrderChangeTracker createNewAddressForAnOrderAndCommit(long remoteStatusId,
+                                                                  long orderId,
+                                                                  UserAddress newAddress) {
+
+        // TODO : Create a tracking record
+        long statusTrackerId = -1;
 
         // retrieve existing address for this order
         OrderAddress existingOrderAddress = retrieveExistingAddress(orderId);
@@ -88,12 +101,24 @@ public class OrderChangeService {
         log.info("Saving new order address to DB " + newOrderAddress);
         OrderAddress createdOrderAddress = orderAddressRepository.save(newOrderAddress);
 
-        return new PrevAndNew(existingOrderAddress, createdOrderAddress);
+        return new OrderChangeTracker(statusTrackerId, existingOrderAddress, createdOrderAddress);
     }
 
+    public void completeChangeOfAddressAndCommit(OrderChangeTracker orderChangeTracker) {
 
+        // TODO : read from change tracker table
+
+        deleteOrderAddress(orderChangeTracker.prevOrderAddress);
+
+        // TODO : Update the change tracker table
+    }
+
+    /**
+     * Deletes address for an order
+     *
+     * @param orderAddress
+     */
     @Transactional
-    // public only for marking transactional
     public void deleteOrderAddress (OrderAddress orderAddress) {
         log.debug("Deleting order address from " + orderAddress);
         orderAddressRepository.delete(orderAddress);
@@ -102,10 +127,13 @@ public class OrderChangeService {
 
     @Transactional
     // public only for marking transactional
-    public void restorePreviousOrderAddress (PrevAndNew prevAndNew) {
+    public void restorePreviousOrderAddress (OrderChangeTracker orderChangeTracker) {
 
-        OrderAddress previousOrderAddress = prevAndNew.prevOrderAddress;
-        OrderAddress createdOrderAddress = prevAndNew.newOrderAddress;
+
+        // TODO : read from change tracker table
+
+        OrderAddress previousOrderAddress = orderChangeTracker.prevOrderAddress;
+        OrderAddress createdOrderAddress = orderChangeTracker.newOrderAddress;
 
         log.info("Deleting newly created order address " + createdOrderAddress);
         deleteOrderAddress(createdOrderAddress);
@@ -113,50 +141,9 @@ public class OrderChangeService {
         log.info("Restoring prev order address " + previousOrderAddress);
         orderAddressRepository.save(previousOrderAddress);
 
+        // TODO : Update the change tracker table
+
     }
 
 
-    /**
-     * A very naive implementation of an attempted distributed transaction.
-     *
-     * NOTE : This is for the purpose of discussion only
-     *
-     * @param orderId
-     * @param newAddress
-     * @param failureInjection
-     * @return
-     */
-    public OrderAddress changeAddressOfAnOrderNaive (long orderId,
-                                                     UserAddress newAddress,
-                                                     Map<String, Params> failureInjection) {
-
-        // commit locally
-        log.info("Adding address change for " + orderId);
-        // NOTE : Starts and commits a transaction
-        PrevAndNew prevAndNew = changeAddressOfAnOrderAndCommit(orderId, newAddress);
-        OrderAddress createdOrderAddress = prevAndNew.newOrderAddress;
-
-        // call the remote server
-        boolean success = warehouseClient.callRemoteServerNaive(orderId, failureInjection);
-
-        // FIXME : There may be a timeout here!!!
-        // NOTE : In case of timeout, there is NO way of knowing if the remote server succeeded or not
-
-        if (success) {
-            log.info("Successful address change for " + orderId);
-            return createdOrderAddress;
-        }
-
-        // Something failed on remote server
-        // try to undo
-        // NOTE : In case of say power failure at this point, we won't be able to undo
-        // NOTE : And if that happens, the system will be in inconsistent state
-        // NOTE : The bigger problems is : we may never know that the system state is not consistent
-        log.info("Undoing address change for " + orderId);
-        // NOTE : Starts and commits a transaction
-        restorePreviousOrderAddress(prevAndNew);
-
-        // return error
-        throw new RuntimeException("Could not change address, as remote server failed");
-    }
 }
