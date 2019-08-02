@@ -14,22 +14,28 @@ public class MainApp {
     private final int[][] finalScores;
     private final int[][] verticalScores;
     private final int[][] horizontalScores;
+    private final int[][] feedScores;
+    private final int[][] probabilityScores;
     private final int numRows;
     private final int numCols;
     private int maxScore;
     private int maxVerticalScore;
     private int maxHorizontalScore;
+    private int maxProbabilityScore;
 
     private MainApp(char[][] inputGrid) {
         this.maxScore = Integer.MIN_VALUE;
         this.maxVerticalScore = Integer.MIN_VALUE;
         this.maxHorizontalScore = Integer.MIN_VALUE;
+        this.maxProbabilityScore = Integer.MIN_VALUE;
         this.inputGrid = inputGrid;
         this.numRows = inputGrid.length;
         this.numCols = inputGrid[0].length;
         this.finalScores = new int[inputGrid.length][inputGrid[0].length];
         this.verticalScores = new int[inputGrid.length][inputGrid[0].length];
         this.horizontalScores = new int[inputGrid.length][inputGrid[0].length];
+        this.feedScores = new int[inputGrid.length][inputGrid[0].length];
+        this.probabilityScores = new int[inputGrid.length][inputGrid[0].length];
         init();
     }
 
@@ -79,6 +85,10 @@ public class MainApp {
                 // give extra score if this is a top row
                 if (i == 0) {
                     score++;
+                } else {
+                    if ( (inputGrid[i-1][j] == MISS) || (inputGrid[i-1][j] == SUNK)) {
+                        score++;
+                    }
                 }
 
                 // set all southern neighbors to this score
@@ -114,6 +124,10 @@ public class MainApp {
         // have we reached the last row
         if (row == numRows) {
             count++ ; // giving extra weight to X in last row
+        } else {
+            if (inputGrid[row][col] == SUNK) {
+                count++;
+            }
         }
 
         //System.out.println("Found " + count);
@@ -182,6 +196,10 @@ public class MainApp {
                 // give extra score if this is a left col
                 if (j == 0) {
                     score++;
+                } else {
+                    if ( (inputGrid[i][j-1] == MISS) || (inputGrid[i][j-1] == SUNK) ) {
+                        score ++;
+                    }
                 }
 
                 // set all southern neighbors to this score
@@ -217,6 +235,10 @@ public class MainApp {
         // have we reached the last row
         if (col == numCols) {
             count++ ; // giving extra weight to X in last row
+        } else {
+            if (inputGrid[row][col] == SUNK) {
+                count++;
+            }
         }
 
         //System.out.println("Found " + count);
@@ -238,7 +260,7 @@ public class MainApp {
                     if (verticalScores [i-1][j] == 0) {
                         if (inputGrid[i-1][j] == OPEN) {
                             // add to horizontal score
-                            finalScores[i-1][j] += verticalScores[i][j];
+                            finalScores[i-1][j] = verticalScores[i][j];
                             if (finalScores[i-1][j] > maxScore) {
                                 maxScore = finalScores[i-1][j];
                             }
@@ -251,7 +273,7 @@ public class MainApp {
                     if (verticalScores [i+1][j] == 0) {
                         if (inputGrid[i+1][j] == OPEN) {
                             // add to horizontal score
-                            finalScores[i+1][j] += verticalScores[i][j];
+                            finalScores[i+1][j] = verticalScores[i][j];
                             if (finalScores[i+1][j] > maxScore) {
                                 maxScore = finalScores[i+1][j];
                             }
@@ -262,6 +284,24 @@ public class MainApp {
         }
     }
 
+
+    /*
+    private void findFeedScores() {
+
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < numCols; j++) {
+
+                if (inputGrid[i][j] != HIT) {
+                    continue;
+                }
+
+                int score = 1;
+                if
+
+            }
+        }
+    }
+    */
 
 
 
@@ -274,10 +314,23 @@ public class MainApp {
         }
 
 
-        System.out.println("\nPrinting vertical scores");
-        System.out.println(maxVerticalScore);
+        System.out.println("\nPrinting horizontal scores");
+        System.out.println(maxHorizontalScore);
         for (int i = 0; i < numRows; i++) {
-            System.out.println(Arrays.toString(verticalScores[i]));
+            System.out.println(Arrays.toString(horizontalScores[i]));
+        }
+
+
+        System.out.println("\nPrinting feed scores");
+        for (int i = 0; i < numRows; i++) {
+            System.out.println(Arrays.toString(feedScores[i]));
+        }
+
+
+        System.out.println("\nPrinting vertical scores");
+        System.out.println(maxProbabilityScore);
+        for (int i = 0; i < numRows; i++) {
+            System.out.println(Arrays.toString(probabilityScores[i]));
         }
 
 
@@ -328,8 +381,8 @@ public class MainApp {
        solver.doPass1();
        solver.doVerticalPass();
        solver.doHorizontalPass();
-       solver.applyHorizontalScore();
        solver.applyVerticalScores();
+       solver.applyHorizontalScore();
        solver.debug();
 
        solver.printGuesses();
