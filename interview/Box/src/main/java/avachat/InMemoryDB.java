@@ -53,9 +53,10 @@ public class InMemoryDB {
         if (prevCount <= 0) {
             throw new RuntimeException("Internal Error : count for value = " + val + " = " + prevCount);
         }
+
+
         keyMap.remove(key);
         // delete key
-
 
         // decrement count
         valueCounts.put(val, prevCount-1);

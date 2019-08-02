@@ -40,6 +40,19 @@ public class InMemoryDBTest {
         // unmodified key
         assertEquals(1, inMemoryDB.count("2"));
 
+        //---------------------------------------------
+        // non existent keys
+        assertEquals("NULL", inMemoryDB.retrieve("d"));
+        assertEquals(0, inMemoryDB.count("9"));
+        // delete non existent key
+        inMemoryDB.delete("d");
+        // delete completely and count
+        inMemoryDB.delete("a");
+        inMemoryDB.delete("b");
+        assertEquals(0, inMemoryDB.count("1"));
+        assertEquals(0, inMemoryDB.count("2"));
+
+
     }
 
 }
