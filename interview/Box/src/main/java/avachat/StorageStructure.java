@@ -3,13 +3,13 @@ package avachat;
 import java.util.HashMap;
 import java.util.Map;
 
-public class InMemoryDB {
+public class StorageStructure {
 
 
     private final Map<String, String> keyMap;
     private final Map<String, Integer> valueCounts;
 
-    public InMemoryDB () {
+    public StorageStructure() {
 
         this.keyMap = new HashMap<>();
         this.valueCounts = new HashMap<>();
