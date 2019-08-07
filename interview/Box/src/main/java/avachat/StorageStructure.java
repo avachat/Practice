@@ -3,7 +3,7 @@ package avachat;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StorageStructure {
+public class StorageStructure implements Transaction {
 
 
     private final Map<String, String> keyMap;
@@ -17,12 +17,18 @@ public class StorageStructure {
 
     public void store(String key, String value) {
 
+        // TODO : decrement old value count
+
         // store in keyMap
         keyMap.put(key, value);
 
         // increment count
         int prevCount = valueCounts.getOrDefault(value, 0);
         valueCounts.put(value, prevCount+1);
+    }
+
+    public boolean contains(String key) {
+        return keyMap.containsKey(key);
     }
 
     public String retrieve(String key) {
@@ -54,13 +60,22 @@ public class StorageStructure {
             throw new RuntimeException("Internal Error : count for value = " + val + " = " + prevCount);
         }
 
-
-        keyMap.remove(key);
         // delete key
+        keyMap.remove(key);
 
         // decrement count
         valueCounts.put(val, prevCount-1);
 
+    }
+
+    @Override
+    public void commit() {
+        // no op
+    }
+
+    @Override
+    public void rollback() {
+        // no op
     }
 
 
